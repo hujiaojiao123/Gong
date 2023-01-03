@@ -8,7 +8,7 @@
 					:right-options="options">
 					<view class="item u-border-bottom">
 						<view class="goods-box goods-box-single">
-							<view class="selected-box" @click="goods_list[bindex].selected = !goods_list[bindex].selected">
+							<view class="selected-box" @click="chooseItem(bitem, bindex)">
 								<view class="no-choose" v-if="!goods_list[bindex].selected"></view>
 								<!-- <image src="/static/shop/gouxuan.png" mode="" ></image> -->
 								<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else></image>
@@ -153,13 +153,29 @@
 					uni.removeStorageSync('addCart')
 				});
 			},
+			chooseItem(item, index) {
+				this.goods_list[index].selected = !this.goods_list[index].selected;
+				// goods_list[bindex].selected = !goods_list[bindex].selected
+			},
 			toPay(){
 				if(this.goods_list.findIndex(target=>target.selected===true) == -1){
 					uni.showToast({ title: '您还没有选择哦～', icon:'none' });
 				    return;
 				}
-				uni.navigateTo({
-					url: '/pages/order/orderConfirm',
+				let chooseArr = [];
+				this.goods_list.forEach((item, index) => {
+					if (item.selected) {
+						chooseArr.push({
+							goods_id: item.goods_id,
+							goods_sku_id: item.goods_sku_ids,
+							goods_count: item.goods_amount
+						})
+					}
+				})
+				this.$api.getOrderSave(chooseArr).then((res) => {
+					uni.navigateTo({
+						url: '/pages/order/orderConfirm',
+					});
 				})
 				
 			},

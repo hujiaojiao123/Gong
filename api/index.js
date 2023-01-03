@@ -67,6 +67,13 @@ const getCartRemove = (data) => request({
 	data, 
 })
 
+// 下单接口 /api/users/order/save
+const getOrderSave = (data) => request({
+	url: 'api/users/order/save',
+	method: 'post', 
+	data, 
+})
+
 export default {
     getCategories,
     getList,
@@ -80,4 +87,5 @@ export default {
 	getCartSave,
 	getCartList,
 	getCartRemove,
+	getOrderSave,
 }

@@ -176,6 +176,8 @@
 				this.$refs.popup.close();
 				if (this.clickStatus == 1) { // 加入购物车
 					this.getCartSaveReqFun();
+				} else {
+					this.sureBuyReqFun();
 				}
 			},
 			// 加入购物车请求
@@ -183,13 +185,29 @@
 				this.$api.getCartSave({
 					goods_id: this.detailData.id,
 					goods_sku_ids: this.popChoose,
-					goods_amount: this.detailData.sale_number,
+					goods_amount: 1,
 				}).then((res) => {
 					this.popChoose = '';
 					uni.showToast({ title: '操作成功', icon:'none' });
 					// 存储加入购物车标识
 					uni.setStorageSync('addCart', true);
 				});
+			},
+			// 确认购买
+			sureBuyReqFun() {
+				let chooseArr = [
+					{
+						goods_id: this.detailData.id,
+						goods_sku_id: this.popChoose,
+						goods_count: 1,
+					}
+				]
+				this.$api.getOrderSave(chooseArr).then((res) => {
+					this.popChoose = '';
+					uni.navigateTo({
+						url: '/pages/order/orderConfirm',
+					});
+				})
 			},
 			getDetailFun(id) {
 				this.$api.getInfo({
