@@ -74,6 +74,13 @@ const getOrderSave = (data) => request({
 	data, 
 })
 
+// 订单确认页面 /api/users/order/confirm
+const getOrderConfirm = (data) => request({
+	url: 'api/users/order/confirm',
+	method: 'post', 
+	data, 
+})
+
 export default {
     getCategories,
     getList,
@@ -88,4 +95,5 @@ export default {
 	getCartList,
 	getCartRemove,
 	getOrderSave,
+	getOrderConfirm,
 }

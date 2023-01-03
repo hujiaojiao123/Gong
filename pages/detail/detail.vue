@@ -202,12 +202,10 @@
 						goods_count: 1,
 					}
 				]
-				this.$api.getOrderSave(chooseArr).then((res) => {
-					this.popChoose = '';
-					uni.navigateTo({
-						url: '/pages/order/orderConfirm',
-					});
-				})
+				this.$store.dispatch('chooseArr', chooseArr);
+				uni.navigateTo({
+					url: '/pages/order/orderConfirm',
+				});
 			},
 			getDetailFun(id) {
 				this.$api.getInfo({
@@ -215,10 +213,6 @@
 				}).then((res)=>{
 					this.detailData = res;
 					this.detailData.status = 0;
-					// this.detailData.pictures = [
-					// 	'http://www.gong-official.com/uploads/image/2022/12/20/31e548c7269570a37710710287774bc905d4731b.jpg',
-					// 	'http://www.gong-official.com/uploads/image/2022/12/20/4f5a613010defb80eddf6d24b8bf41191a78e9b8.jpg'
-					// ];
 				});
 			},
 			getSkuFun(id) {

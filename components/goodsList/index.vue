@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="good-li" v-for="(item, index) in list" :key="index">
-			<image class="goods-img" :src="item.image" mode="widthFix"/>
+			<image class="goodsImg" :src="item.cover"/>
 			<view class="goods-content">
 				<view>
 					<view class="title">
@@ -11,16 +11,14 @@
 					</view>
 					<view class="info">
 						规格：
-						<span v-for="(citem, cindex) in item.specifications" :key="cindex">
-							{{citem}}  
-						</span>
+						{{item.goods_sku_name}}  
 					</view>
 				</view>
 				<view class="content-bottom" v-if="!showStatus">
 					<view class="price">
 						<span class="big-text">￥{{item.price}}</span>
 					</view>
-					<view v-if="showCount" class="bottom-right-mes">共{{item.count}}件</view>
+					<view v-if="showCount" class="bottom-right-mes">共{{item.goods_count}}件</view>
 				</view>
 				<view class="status-content-bottom" v-if="showStatus">
 					<view class="s-b-top">
@@ -68,16 +66,11 @@
 	.good-li {
 		padding: 30rpx 28rpx;
 		display: flex;
-		.goods-img {
+		.goodsImg {
 			width: 200rpx;
 			height: 200rpx;
 			overflow: hidden;
 			border-radius: 8rpx;
-			border: 1px solid #f00;
-			image{
-				width: 100%;
-				height: 100%;
-			}
 		}
 		.goods-content {
 			flex: 1;

@@ -171,12 +171,11 @@
 							goods_count: item.goods_amount
 						})
 					}
-				})
-				this.$api.getOrderSave(chooseArr).then((res) => {
-					uni.navigateTo({
-						url: '/pages/order/orderConfirm',
-					});
-				})
+				});
+				this.$store.dispatch('chooseArr', chooseArr);
+				uni.navigateTo({
+					url: '/pages/order/orderConfirm',
+				});
 				
 			},
 			toList() {
