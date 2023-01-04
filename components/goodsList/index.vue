@@ -16,7 +16,7 @@
 				</view>
 				<view class="content-bottom" v-if="!showStatus">
 					<view class="price">
-						<span class="big-text">￥{{item.price}}</span>
+						<span class="big-text">¥{{item.price}}</span>
 					</view>
 					<view v-if="showCount" class="bottom-right-mes">共{{item.goods_count}}件</view>
 				</view>

@@ -5,12 +5,13 @@
 			<view class="confirm-adress">
 				<view class="ad-title">收货信息</view>
 				<view class="ad-content" @click="toAdress">
-					<view>
+					<view v-if="address != null">
 						<view class="ad-content-mes">{{address.name}} {{address.mobile}}</view>
 						<view class="ad-content-mes ad-content-adress">
 						{{address.province + address.city + address.area + address.address}}
 						</view>
 					</view>
+					<view v-else>请选择收货地址</view>
 					<image class="ad-content-arrow" src="../../static/order/arrow.png"></image>
 				</view>
 			</view>
@@ -45,20 +46,20 @@
 		data() {
 			return {
 				confirmList: [],
-				address: {},
+				address: null,
 				total_goods: '',
 				total: '',
 				total_minus: '',
 			}
 		},
-		created() {
+		onShow() {
 			this.requestOrderConfirmFun();
 		},
 		methods: {
 			toAdress() {
-				// uni.navigateTo({
-				// 	url: '/pages/order/orderConfirm',
-				// })
+				uni.navigateTo({
+					url: '/pages/userCenter/address',
+				})
 			},
 			toPay() {
 				this.$api.getOrderSave(this.$store.getters.chooseArr).then((res) => {
@@ -140,7 +141,7 @@
 			margin-top: 20rpx;
 			background-color: #fff;
 			box-sizing: border-box;
-			padding: 50rpx 32rpx;
+			padding: 50rpx 32rpx 28rpx 32rpx;
 			.o-price {
 				display: flex;
 				justify-content: space-between;

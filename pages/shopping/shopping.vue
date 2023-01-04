@@ -33,7 +33,8 @@
 									</view>
 									<view class="content-bottom">
 										<view class="price">
-											<span class="big-text">￥{{bitem.price}}</span>
+											<span class="big-text">¥{{bitem.selected ? bitem.price : bitem.price_sale}}</span>
+											<span v-if="bitem.selected" class="old-price">¥{{bitem.price_sale}}</span>
 										</view>
 										<view class="count">
 											<uni-number-box :min="1" :max="200" background="#fff" v-model="bitem.goods_amount" @change="changeGoodsCount(bindex)"></uni-number-box>
@@ -47,9 +48,9 @@
 			</uni-swipe-action>
 			<!-- 底部全选 -->
 			<view class="pay-tabbar">
-				<view class="left">
+				<view class="left" @click="selectAll">
 					<view class="left-img">
-						<view class="no-choose" v-if="!isAllSelected" @click="selectAll"></view>
+						<view class="no-choose" v-if="!isAllSelected"></view>
 						<!-- <image src="" mode="" v-if="!isAllSelected" @click="selectAll"></image> -->
 						<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else  @click="selectAll"></image>
 					</view>
@@ -355,11 +356,19 @@
 				.content-bottom {
 					display: flex;
 					justify-content: space-between;
+					align-items: center;
 				}
 				.price{
+					display: flex;
+					flex-direction: column;
 					.big-text{
 						font-weight: 800;
 						font-size: 35rpx;
+					}
+					.old-price {
+						text-decoration: line-through;
+						color: #999;
+						font-size: 24rpx;
 					}
 				}
 				.count{

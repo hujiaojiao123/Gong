@@ -4,13 +4,23 @@ import {
  
  
 // 获取商品分类 /api/goods/categories
-const getCategories = (data) => request({url: 'api/goods/categories', method: 'get', data})
+const getCategories = (data) => request({url: 'api/goods/categories', method: 'get', data, loadingText: '加载中',})
 
 // 获取商品列表 /api/goods/list
-const getList = (data) => request({url: 'api/goods/list', method: 'get', data})
+const getList = (data) => request({
+	url: 'api/goods/list', 
+	method: 'get', 
+	data,
+	loadingText: '加载中',
+})
 
 // 获取商品详情 /api/goods/info
-const getInfo = (data) => request({url: 'api/goods/info', method: 'get', data})
+const getInfo = (data) => request({
+	url: 'api/goods/info', 
+	method: 'get', 
+	data,
+	loadingText: '加载中',
+})
 
 // 获取颜色 尺码分类接口 /api/goods/sku
 const getSku = (data) => request({url: 'api/goods/sku', method: 'get', data})
@@ -43,6 +53,7 @@ const getAddressInfo = (data) => request({
 	url: 'api/users/address/info',
 	method: 'get', 
 	data, 
+	loadingText: '加载中',
 })
 
 // 添加购物车接口 /api/users/cart/save
@@ -79,6 +90,7 @@ const getOrderConfirm = (data) => request({
 	url: 'api/users/order/confirm',
 	method: 'post', 
 	data, 
+	loadingText: '加载中',
 })
 
 export default {
