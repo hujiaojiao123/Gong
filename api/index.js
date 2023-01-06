@@ -93,6 +93,14 @@ const getOrderConfirm = (data) => request({
 	loadingText: '加载中',
 })
 
+// 首页接口 /api/index/content
+const getIndexContent = (data) => request({
+	url: 'api/index/content',
+	method: 'post', 
+	data, 
+	loadingText: '加载中',
+})
+
 export default {
     getCategories,
     getList,
@@ -108,4 +116,5 @@ export default {
 	getCartRemove,
 	getOrderSave,
 	getOrderConfirm,
+	getIndexContent,
 }

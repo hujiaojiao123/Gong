@@ -17,14 +17,13 @@ const LoginMixin = {
 				provider: 'weixin',
 				success: loginRes => {
 					console.log('loginRes=====', loginRes);
-					this.getUserInfoFun();
 					this.getIdFun(loginRes.code);
 				},
 				fail: err => {}
 			});
 		},
 		// 获取用户信息
-		getUserInfoFun() {
+		getUserInfoFun(session_key) {
 			uni.getUserInfo({
 				provider: 'weixin',
 				success: infoRes => {
@@ -32,7 +31,18 @@ const LoginMixin = {
 					this.avatarUrl = infoRes.userInfo.avatarUrl;
 					uni.setStorageSync('avatarUrl', this.avatarUrl);
 					uni.setStorageSync('nickName', this.nickName);
+					// console.log('infoRes====', infoRes)
+					this.getPhoneResFun(session_key, infoRes.encryptedData, infoRes.iv);
 				}
+			});
+		},
+		getPhoneResFun(session_key, encryptedData, iv) {
+			this.$api.getPhoneNumber({
+				session_key,
+				encryptedData,
+				iv
+			}).then((res) => {
+				// console.log('res====', infoRes)
 			});
 		},
 		getIdFun(code) {
@@ -44,6 +54,7 @@ const LoginMixin = {
 					this.getToken = res.token
 					uni.setStorageSync('token', res.token);
 					this.requestSussessFun();
+					this.getUserInfoFun(res.session_key);
 				}
 			});
 		},

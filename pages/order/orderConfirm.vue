@@ -72,9 +72,12 @@
 						signType: res.signType, //固定值
 						paySign: res.paySign, //签名
 						success(res) {
-							uni.showToast({
-								title: '支付成功',
-								icon: 'none'
+							// uni.showToast({
+							// 	title: '支付成功',
+							// 	icon: 'none'
+							// });
+							uni.redirectTo({
+								url: '/pages/userCenter/myOrder'
 							});
 							// 存储刷新购物车的标识
 							uni.setStorageSync('addCart', true);

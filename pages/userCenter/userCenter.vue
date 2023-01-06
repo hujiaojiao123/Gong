@@ -61,6 +61,9 @@
 		// 	this.nickName = uni.getStorageSync('nickName') || '微信用户';
 		// },
 		methods: {
+			onGetPhoneNumber(e) {
+				console.log('e====', e);
+			},
 			onChooseAvatar(e) {
 				console.log('e=====', e);
 				const { avatarUrl } = e.detail 

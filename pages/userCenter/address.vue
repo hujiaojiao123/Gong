@@ -58,7 +58,6 @@
 		methods: { 
 			//父组件的获取子组件传递的值， 在为josn 有code和name 
 			change(result) { 
-				console.log(JSON.stringify(result.data)); 
 				this.planLocate = ''; 
 				result.data.forEach( (item,index) =>{ 
 					if(index===0){ 
@@ -69,7 +68,6 @@
 				}) ; 
 				let arr = this.planLocate.split('-'); 
 				this.getChooseName = arr;
-				console.log(arr) 
 			}, 
 			// 获取地址接口
 			getAddressInfoFun() {
@@ -96,7 +94,7 @@
 					this.getChooseName = [res.province, res.city, res.area];
 					this.chooseValue = arr;
 					this.planLocate = `${res.province}-${res.city}-${res.area}`;
-					console.log(arr);
+					// console.log(arr);
 				})
 			},
 			saveFun() {
@@ -113,7 +111,6 @@
 					uni.showToast({ title: '请选择收货地区～', icon:'none' });
 					return;
 				}
-				uni.showToast({ title: '请输入名字～', icon:'none' });
 				this.$api.getSave({
 					name: this.name,
 					mobile: this.mobile,

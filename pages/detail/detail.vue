@@ -212,7 +212,7 @@
 				  id,
 				}).then((res)=>{
 					this.detailData = res;
-					this.detailData.status = 0;
+					// this.detailData.status = 0;
 				});
 			},
 			getSkuFun(id) {

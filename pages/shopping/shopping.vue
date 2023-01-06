@@ -1,40 +1,42 @@
 <template>
 	<view class="shop-page">
-		<view v-if="goods_list.length !== 0">
-			<uni-swipe-action>
-				<uni-swipe-action-item :index="bindex"
-					v-for="(bitem, bindex) in goods_list" :key="bindex" 
-					@click="clickH(bindex, bitem)" @open="openH"
-					:right-options="options">
-					<view class="item u-border-bottom">
-						<view class="goods-box goods-box-single">
-							<view class="selected-box" @click="chooseItem(bitem, bindex)">
-								<view class="no-choose" v-if="!goods_list[bindex].selected"></view>
-								<!-- <image src="/static/shop/gouxuan.png" mode="" ></image> -->
-								<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else></image>
-							</view>
-							<view class="goods-box">
-								<view class="goods-img">
-									<image :src="bitem.cover" mode=""></image>
+		<view class="shop-page-content" v-if="goods_list.length !== 0">
+			<view class="content-top">
+				<uni-swipe-action>
+					<uni-swipe-action-item :index="bindex"
+						v-for="(bitem, bindex) in goods_list" :key="bindex" 
+						@click="clickH(bindex, bitem)" @open="openH"
+						:right-options="options">
+						<view class="item u-border-bottom">
+							<view class="goods-box goods-box-single">
+								<view class="selected-box" @click="chooseItem(bitem, bindex)">
+									<view class="no-choose" v-if="!goods_list[bindex].selected"></view>
+									<!-- <image src="/static/shop/gouxuan.png" mode="" ></image> -->
+									<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else></image>
 								</view>
-								<view class="content">
-									<view>
-										<view class="title">
-											<view class="text-box">
-												{{bitem.name}}
+								<view class="goods-box">
+									<view class="goods-img">
+										<image :src="bitem.cover" mode=""></image>
+									</view>
+									<view class="content">
+										<view>
+											<view class="title">
+												<view class="text-box">
+													{{bitem.name}}
+												</view>
+											</view>
+											<view class="info">
+												规格：
+												<span v-for="(citem, cindex) in bitem.goods_sku_names" :key="cindex">
+													{{citem}}  
+												</span>
 											</view>
 										</view>
-										<view class="info">
-											规格：
-											<span v-for="(citem, cindex) in bitem.goods_sku_names" :key="cindex">
-												{{citem}}  
-											</span>
-										</view>
-									</view>
-									<view class="content-bottom">
-										<view class="price">
-											<span class="big-text">¥{{bitem.selected ? bitem.price : bitem.price_sale}}</span>
-											<span v-if="bitem.selected" class="old-price">¥{{bitem.price_sale}}</span>
+										<view class="content-bottom">
+											<view class="price">
+												<span class="big-text">¥{{bitem.selected ? bitem.price : bitem.price_sale}}</span>
+												<span v-if="bitem.selected" class="old-price">¥{{bitem.price_sale}}</span>
+											</view>
 										</view>
 										<view class="count">
 											<uni-number-box :min="1" :max="200" background="#fff" v-model="bitem.goods_amount" @change="changeGoodsCount(bindex)"></uni-number-box>
@@ -43,9 +45,9 @@
 								</view>
 							</view>
 						</view>
-					</view>
-				</uni-swipe-action-item>
-			</uni-swipe-action>
+					</uni-swipe-action-item>
+				</uni-swipe-action>
+			</view>
 			<!-- 底部全选 -->
 			<view class="pay-tabbar">
 				<view class="left" @click="selectAll">
@@ -71,7 +73,7 @@
 			</view>	
 		</view>
 		<!-- 空白页面 -->
-		<view class="shop-blank" v-if="isRequest && (goods_list.length === 0 || !isToken)">
+		<view class="shop-blank" v-if="(isRequest && goods_list.length === 0) || !isToken">
 			<image class="blank-img" src="/static/shop//blank.png"></image>
 			<view class="blank-mes">赶快把购物袋装满吧～</view>
 			<view class="blank-btn" @click="toList">去选品</view>
@@ -133,17 +135,21 @@
 			}
 		},
 		onLoad() {
-			this.getCartListReqFun();
-		},
-		onShow() {
-			if (uni.getStorageSync('addCart')) {
+			this.isToken = uni.getStorageSync('token');
+			if (!uni.getStorageSync('addCart') && this.isToken) {
 				this.getCartListReqFun();
 			}
+		},
+		onShow() {
 			this.isToken = uni.getStorageSync('token');
+			if (uni.getStorageSync('addCart') && this.isToken) {
+				this.getCartListReqFun();
+			}
 		},
 		methods:{
 			// 请求列表
 			getCartListReqFun() { 
+				
 				this.$api.getCartList({}).then((res) => {
 					res.forEach((item) => {
 						item.selected = false;
@@ -234,14 +240,22 @@
 <style lang="scss">
 	.shop-page {
 		background-color: #F7F7F7;
-		padding: 32rpx 20rpx 200rpx 20rpx;
+		padding: 32rpx 20rpx 0 20rpx;
 		box-sizing: border-box;
 		height: 100vh;
+		.shop-page-content {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+		.content-top {
+			flex: 1;
+			overflow: auto;
+		}
 		.item {
 			display: flex;
 			background: #FFFFFF;
 			border-radius: 4px;
-			
 		}
 		.uni-swipe {
 			margin-bottom: 20rpx;
@@ -257,10 +271,6 @@
 			height: 42rpx;
 		}
 		.pay-tabbar{
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			right: 0;
 			background-color: #FFFFFF;
 			display: flex;
 			align-items: center;
@@ -372,8 +382,9 @@
 					}
 				}
 				.count{
-					display: flex;
-					justify-content: flex-end;
+					position: absolute;
+					right: 40rpx;
+					bottom: 40rpx;
 				}
 			}
 		}
