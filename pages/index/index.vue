@@ -1,6 +1,7 @@
 <template>
-	<view class="list-page">
-		<view class="list-page-container" ref="container" :style="{top: statusBarHeight}">
+	<view class="index-page">
+		<view class="list-page-container" ref="container" 
+		:style="{top: statusBarHeight.top - 6 + 'px', height: statusBarHeight.height + 12 + 'px'}">
 			<image src="/static/index/logo_index.png"></image>
 		</view>
 		<swiper class="index-swiper"
@@ -18,15 +19,14 @@
 				<view :style="{width: (goods.length ? Math.floor(100 / goods.length) + '%' : '50%')}" class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
 		 	</block>
 		</view>
+		<view class="index-name">{{goods[swiperCurrent].goods_name}}</view>
 		<view class="index-btn" @click="toDetail">查看详情</view>
 	</view>
 </template>
 
 <script>
-	import statusBar from "@/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-status-bar";
 	export default {
 	    components: {
-	    	statusBar
 	    },
 	    data() {
 	        return {
@@ -37,7 +37,13 @@
 	        }
 	    },
 		mounted() {
-			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 12 + 'px';
+			//#ifdef APP-PLUS
+			this.statusBarHeight.top = uni.getSystemInfoSync()['statusBarHeight'];
+			this.statusBarHeight.height = 40;
+			// #endif
+			//#ifdef MP
+			this.statusBarHeight = uni.getMenuButtonBoundingClientRect()
+			// #endif
 		},
 		onLoad() {
 			this.getIndexFun();
@@ -61,19 +67,21 @@
 </script>
 
 <style lang="scss">
-	.list-page {
+	.index-page {
 		height: 100vh;
 		.list-page-container {
 			font-size: 40rpx;
 			color: #fff;
-			height: 88rpx;
+			width: 100%;
 			position: fixed;
-			left: 36rpx;
-			line-height: 70rpx;
+			padding-left: 20rpx;
 			z-index: 10;
+			display: flex;
+			align-items: center;
+			border-bottom: 1px solid rgba(0,0,0,0.1);
 			image {
-				width: 48rpx;
-				height: 56rpx;
+				width: 82rpx;
+				height: 86rpx;
 			}
 		}
 		.index-swiper {
@@ -100,7 +108,8 @@
 		
 			.active {
 				height: 4;
-				background: #000;
+				background: #fff;
+				opacity: 0.6;
 			}
 		}
 		.index-btn {
@@ -116,6 +125,14 @@
 			border-radius: 4rpx;
 			text-align: center;
 			font-size: 28rpx;
+			color: #fff;
+		}
+		.index-name {
+			position: fixed;
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: 370rpx;
+			font-size: 60rpx;
 			color: #fff;
 		}
 	}

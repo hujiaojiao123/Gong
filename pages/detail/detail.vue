@@ -195,7 +195,7 @@
 				let chooseArr = [
 					{
 						goods_id: this.detailData.id,
-						goods_sku_id: this.popChoose,
+						goods_sku_id: [this.popChoose],
 						goods_count: 1,
 					}
 				]

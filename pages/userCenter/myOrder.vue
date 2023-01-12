@@ -1,33 +1,39 @@
 <template>
 	<view class="my-order-page">
-		<view class="good-li" v-for="(orderItem, orderIndex) in orderList" :key="orderIndex">
-			<view class="good-li-item" v-for="(item, index) in orderItem.goods" :key="index" @click="toClickFun(orderItem)">
-				<image class="goodsImg" :src="item.product.cover"/>
-				<view class="goods-content">
-					<view>
-						<view class="title">
-							<view class="text-box">
-								{{item.product.name}}
+		<view class="order-page-padding"  v-if="orderList.length != 0" >
+			<view class="good-li" v-for="(orderItem, orderIndex) in orderList" :key="orderIndex" v-if="orderItem.goods.length != 0">
+				<view class="good-li-item" v-for="(item, index) in orderItem.goods" :key="index" @click="toClickFun(orderItem)">
+					<image class="goodsImg" :src="item.product.cover"/>
+					<view class="goods-content">
+						<view>
+							<view class="title">
+								<view class="text-box">
+									{{item.product.name}}
+								</view>
+							</view>
+							<view class="info">
+								规格：{{item.sku.name}}
 							</view>
 						</view>
-						<view class="info">
-							规格：{{item.sku.name}}
-						</view>
-					</view>
-					<view class="status-content-bottom">
-						<view class="s-b-top">
-							<span class="price-top">¥{{item.price}}</span>
-							<span class="price-top-num">X{{item.goods_count}}</span>
-						</view>
-						<view class="s-b-bottom">
-							<view class="price">
-								<span class="big-text">实付款￥{{orderItem.goods.length === 1 ? orderItem.amount : item.amount}}</span>
+						<view class="status-content-bottom">
+							<view class="s-b-top">
+								<span class="price-top">¥{{item.price}}</span>
+								<span class="price-top-num">X{{item.goods_count}}</span>
 							</view>
-							<view class="bottom-right-mes">{{orderItem.status_name}}</view>
+							<view class="s-b-bottom">
+								<view class="price">
+									<span class="big-text">实付款￥{{orderItem.goods.length === 1 ? orderItem.amount : item.amount}}</span>
+								</view>
+								<view class="bottom-right-mes">{{orderItem.status_name}}</view>
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+		</view>
+		<view class="order-blank" v-if="isRequestFinish && orderList.length == 0">
+			<image src="/static/order/orderBlank.png"></image>
+			<view>暂无任何订单</view>
 		</view>
 	</view>
 </template>
@@ -41,6 +47,7 @@
 		data() {
 			return {
 				orderList: [],
+				isRequestFinish: false,
 			}
 		},
 		created() {
@@ -53,6 +60,11 @@
 		},
 		onUnload() {
 			uni.$off('getlist');
+		},
+		computed: {
+			isShowBlank() {
+				return this.isRequestFinish && this.orderList.length == 0;
+			}
 		},
 		methods: {
 			toClickFun(item) {
@@ -68,8 +80,10 @@
 				
 			},
 			getOrderListReqFun() {
+				this.isRequestFinish = false;
 				this.$api.getOrderList({}).then((res) => {
 					this.orderList = res;
+					this.isRequestFinish = true;
 				});
 			},
 		}
@@ -80,9 +94,10 @@
 	.my-order-page {
 		height: 100%;
 		background-color: #f7f7f7;
-		padding: 40rpx;
 		box-sizing: border-box;
-		
+		.order-page-padding {
+			padding: 40rpx;
+		}
 		.good-li {
 			padding: 30rpx 28rpx;
 			background-color: #fff;
@@ -154,6 +169,23 @@
 					color: #999;
 					margin-left: 8rpx;
 				}
+			}
+		}
+		.order-blank {
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			height: 100vh;
+			padding-top: 320rpx;
+			box-sizing: border-box;
+			image {
+				width: 226rpx;
+				height: 154rpx;
+				margin-bottom: 42rpx;
+			}
+			view {
+				font-size: 32rpx;
+				color: #BCBCBC;
 			}
 		}
 	}

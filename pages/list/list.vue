@@ -1,6 +1,11 @@
 <template>
 	<view class="list-page">
-		<!-- <view class="list-page-logo" ref="container" :style="{top: statusBarHeight}">廾</view> -->
+		<view class="list-page-container" ref="container"
+		:style="{'padding-top': statusBarHeight.top - 6 + 'px', 
+		height: statusBarHeight.height + 12 + 'px', 'line-height': statusBarHeight.height + 12 + 'px'}">
+			<image src="/static/list/list_logo.png"></image>
+			<view class="top-title">分类</view>
+		</view>
 		<!-- tab -->
 		<view class="top-tab">
 			<view 
@@ -34,7 +39,10 @@
 					</view>
 				</view>
 			</scroll-view>
-			<view class="blank-text" v-if="isShowBlank">暂无数据</view>
+			<view class="blank-text" v-if="isShowBlank">
+				<image src="/static/list/listBlank.png"></image>
+				<view>敬请期待～</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -44,7 +52,7 @@
 	    components: {},
 	    data() {
 	        return {
-				tabChooseIndex: 1,
+				tabChooseIndex: 2,
 	            tabList: [
 					{id: 1, name: '金', img: '/static/list/jin.png', chooseImg: '/static/list/jin_choose.png'},
 					{id: 2, name: '木', img: '/static/list/mu.png', chooseImg: '/static/list/mu_choose.png'},
@@ -52,11 +60,7 @@
 					{id: 4, name: '火', img: '/static/list/huo.png', chooseImg: '/static/list/huo_choose.png'},
 					{id: 5, name: '土', img: '/static/list/tu.png', chooseImg: '/static/list/tu_choose.png'},
 				],
-				menuList: [
-					{name: '全部商品', id: 'all'},
-					{name: '建军95周年系列', id: '95'},
-					{name: '周年限定', id: 'only'},
-				], // 左侧分类列表
+				menuList: [], // 左侧分类列表
 				current: 0, // 当前点击项
 				rectInfoList: [],
 				tempCurrent: 0,
@@ -70,7 +74,7 @@
 	    },
 		onShow() {
 			// this.getCategoriesFun(0);
-			this.getCategoriesFun(1);
+			this.getCategoriesFun(this.tabChooseIndex);
 		},
 		created() {
 			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
@@ -79,6 +83,15 @@
 			isShowBlank() {
 				return (this.leftRequestEnd && this.menuList.length == 0) || (this.rightRequestEnd && this.contentList.length == 0);
 			}
+		},
+		mounted() {
+			//#ifdef APP-PLUS
+			this.statusBarHeight.top = uni.getSystemInfoSync()['statusBarHeight'];
+			this.statusBarHeight.height = 40;
+			// #endif
+			//#ifdef MP
+			this.statusBarHeight = uni.getMenuButtonBoundingClientRect()
+			// #endif
 		},
 	    methods: {
 			getCategoriesFun(catId){
@@ -132,14 +145,26 @@
 		height: calc(100vh);
 		display: flex;
 		flex-direction: column;
-		.list-page-logo {
+		.list-page-container {
 			font-size: 40rpx;
 			color: #fff;
-			height: 88rpx;
-			position: fixed;
-			left: 36rpx;
-			line-height: 70rpx;
-			z-index: 10;
+			width: 100%;
+			display: flex;
+			align-items: center;
+			border-bottom: 1px solid rgba(0,0,0,0.1);
+			text-align: center;
+			position: relative;
+			image {
+				width: 48rpx;
+				height: 54rpx;
+				position: absolute;
+				left: 36rpx;
+			}
+			.top-title {
+				font-size: 34rpx;
+				color: #000;
+				flex: 1;
+			}
 		}
 		.top-tab {
 			display: flex;
@@ -223,16 +248,23 @@
 					font-size: 28upx;
 					font-weight: bold;
 				}
-				
 			}
 		}
 		.blank-text {
+			display: flex;
+			flex-direction: column;
 			font-size: 32rpx;
 			text-align: center;
 			align-items: center;
 			display: flex;
-			justify-content: center;
+			padding-top: 300rpx;
 			width: 100%;
+			color: #BCBCBC;
+			image {
+				width: 200rpx;
+				height: 188rpx;
+				margin-bottom: 18rpx;
+			}
 		}
 	}
 </style>
