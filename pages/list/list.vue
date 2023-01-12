@@ -74,6 +74,7 @@
 	    },
 		onShow() {
 			// this.getCategoriesFun(0);
+			this.tabChooseIndex = 2;
 			this.getCategoriesFun(this.tabChooseIndex);
 		},
 		created() {
@@ -105,8 +106,10 @@
 						// this.tabList = res;
 					} else {
 						this.menuList = res;
-						this.getListFun(res[0].id);
-						this.current = res[0].id;
+						if (res.length != 0) {
+							this.getListFun(res[0].id);
+							this.current = res[0].id;
+						}
 					}
 				});
 			},
@@ -141,7 +144,7 @@
 
 <style lang="scss">
 	.list-page {
-		background-color: #eee;
+		background-color: #f7f7f7;
 		height: calc(100vh);
 		display: flex;
 		flex-direction: column;
@@ -168,16 +171,15 @@
 		}
 		.top-tab {
 			display: flex;
-			padding: 44upx 64upx 26upx 64upx;
+			padding: 0 54rpx;
 			background-color: #fff;
 			justify-content: space-between;
-			.top-tab-img {
-				// width: 29px;
-				// height: 23px;
-			}
+			height: 142rpx;
+			box-sizing: border-box;
 			.top-tab-text {
+				height: 142rpx;
+				padding: 66rpx 10rpx 30rpx 10rpx;
 				color: #ccc;
-				line-height: 72upx;
 				font-weight: bold;
 				image {
 					width: 56rpx;
@@ -189,23 +191,23 @@
 			}
 		}
 		.tab-content {
-			padding: 40upx 32upx;
+			padding: 40rpx 32rpx;
 			display: flex;
 			flex: 1;
 			overflow: hidden;
 			.left-aside {
-				width: 168upx;
-				padding-right: 32upx;
+				width: 168rpx;
+				padding-right: 32rpx;
 				flex-shrink: 0;
 				height: 100%;
 				box-sizing: border-box;
 				.left-aside-item {
-					font-size: 24upx;
+					font-size: 24rpx;
 					color: #888;
-					margin-bottom: 60upx;
+					margin-bottom: 60rpx;
 				}
 				.left-aside-item.active {
-					font-size: 30upx;
+					font-size: 30rpx;
 					color: #333;
 				}
 			}
@@ -218,7 +220,7 @@
 					justify-content: space-between;
 				}
 				.right-aside-item {
-					width: 250upx;
+					width: 250rpx;
 					text-align: center;
 					display: flex;
 					justify-content: center;

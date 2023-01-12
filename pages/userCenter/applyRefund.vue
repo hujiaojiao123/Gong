@@ -64,6 +64,9 @@
 		},
 		computed: {
 			getStatusName() {
+				if (!this.orderDetailInfo.refund) {
+					return;
+				}
 				if (this.orderDetailInfo.refund[0].status == 0) {
 					return '申请退款中'
 				} 

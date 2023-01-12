@@ -20,4 +20,7 @@
 	button::after {
 	   border: none;
 	}
+	image {
+		will-change: transform;
+	}
 </style>

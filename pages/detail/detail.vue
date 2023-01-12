@@ -6,7 +6,7 @@
 			@change="changeSwiper"
 			>
 			  <swiper-item v-for="(item, index) in detailData.pictures" :key="index">
-			    <image style="width: 100%;height: auto;" :src="item" mode="widthFix"/>
+			    <image class="detail-banner-img" :src="item"></image>
 			  </swiper-item>
 			</swiper>
 			<!-- 轮播指示点样式修改 -->
@@ -45,6 +45,7 @@
 				</view>
 			</view>
 		</view>
+		<rich-text :nodes="detailData.content"></rich-text>
 		 <!-- 热门推荐 -->
 		 <view class="d-hot">
 			 <view class="hot-title">热门推荐</view>
@@ -208,8 +209,11 @@
 				this.$api.getInfo({
 				  id,
 				}).then((res)=>{
+					let content = res.content.replace(/\<img/gi,'<img class="imgStyle"').replace(/\<p/gi,'<p class="pStyle"');
+					res.content = content;
+					// res.content.replace(/\<p/gi,'<p class="pStyle"');
+					console.log(content);
 					this.detailData = res;
-					// this.detailData.status = 0;
 				});
 			},
 			getSkuFun(id) {
@@ -234,7 +238,8 @@
 
 <style lang="scss">
 	.page-detail {
-		padding-bottom: 250rpx;
+		background: #f7f7f7;
+		padding-bottom: 230rpx;
 	}
 	.detail-banner {
 		height: 750rpx;
@@ -242,15 +247,21 @@
 		justify-content: center;
 		position: relative;
 		box-sizing: border-box;
+		background-color: #fff;
 		.b-top {
+			width: 100%;
+			height: 630rpx;
+		}
+		.detail-banner-img {
 			width: 100%;
 			height: 630rpx;
 		}
 	}
 	.else-color {
 		display: flex;
-		margin: 35rpx 0 60rpx 0;
+		padding: 35rpx 0 60rpx 0;
 		justify-content: center;
+		background-color: #fff;
 		.else-color-list {
 			width: 140rpx;
 			height: 140rpx;
@@ -283,6 +294,7 @@
 		}
 	}
 	.d-content {
+		background-color: #fff;
 		padding: 20px;
 		box-sizing: border-box;
 		.d-titile {
@@ -330,7 +342,7 @@
 	}
 	.d-hot {
 		margin-top: 60rpx;
-		padding: 0 40rpx;
+		padding: 0 40rpx 44rpx 40rpx;
 		box-sizing: border-box;
 		.hot-title {
 			font-size: 28rpx;
@@ -352,19 +364,18 @@
 			width: 100%;
 			background-color: #fff;
 			height: 430rpx;
-			border: 1px solid #999;
-			border-radius: 4px 4px 0 0;
-			margin-bottom: 40rpx;
+			margin-bottom: 38rpx;
 			image {
 				width: 100%;
 				height: 100%;
+				border-radius: 4px 4px 0 0;
 			}
 		}
 		.hot-name {
 			width: 430rpx;
 			font-size: 24rpx;
 			font-weight: bold;
-			margin-bottom: 24rpx;
+			margin-bottom: 18rpx;
 		}
 		.hot-price {
 			font-size: 28rpx;
@@ -483,7 +494,7 @@
 			}
 		}
 		.uni-data-checklist .checklist-group .checklist-box.is--tag.is-disable  {
-			background-color: #f7f7ff !important;
+			background-color: #f7f7f7 !important;
 			opacity: 1 !important;
 			.checklist-text {
 				color: #ccc !important;
@@ -494,6 +505,10 @@
 		}
 		.uni-data-checklist .checklist-group .checklist-box .checklist-content {
 			justify-content: center;
+		}
+		.uni-data-checklist .checklist-group .checklist-box.is--tag.is-checked {
+			background-color: #000;
+			border-color: #000;
 		}
 		.pop-btn {
 			width: 100%;
@@ -508,5 +523,20 @@
 		.pop-btn-disable {
 			background-color: #999;
 		}
+	}
+	.imgStyle {
+		width: 100%;
+		height: auto;
+		margin: 0;
+		border:none;
+		padding: 0;
+		vertical-align: middle;
+	}
+	.pStyle {
+		font-size: 12px;
+		color: #666;
+		margin: 0;
+		border:none;
+		
 	}
 </style>
