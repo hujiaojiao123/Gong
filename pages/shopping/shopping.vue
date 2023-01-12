@@ -11,11 +11,10 @@
 							<view class="goods-box goods-box-single">
 								<view class="selected-box" @click="chooseItem(bitem, bindex)">
 									<view class="no-choose" v-if="!goods_list[bindex].selected"></view>
-									<!-- <image src="/static/shop/gouxuan.png" mode="" ></image> -->
 									<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else></image>
 								</view>
 								<view class="goods-box">
-									<view class="goods-img">
+									<view class="goods-img" @click="toDetail(bitem.goods_id)">
 										<image :src="bitem.cover" mode=""></image>
 									</view>
 									<view class="content">
@@ -74,7 +73,7 @@
 		</view>
 		<!-- 空白页面 -->
 		<view class="shop-blank" v-if="(isRequest && goods_list.length === 0) || !isToken">
-			<image class="blank-img" src="/static/shop//blank.png"></image>
+			<image class="blank-img" src="/static/shop/blank.png"></image>
 			<view class="blank-mes">赶快把购物袋装满吧～</view>
 			<view class="blank-btn" @click="toList">去选品</view>
 		</view>
@@ -101,7 +100,7 @@
 							backgroundColor: '#dd524d'
 						}
 					}
-				]
+				],
 			}
 		},
 		computed: {
@@ -147,9 +146,13 @@
 			}
 		},
 		methods:{
+			toDetail(id) {
+				uni.navigateTo({
+					url: '/pages/detail/detail?id=' + id,
+				});
+			},
 			// 请求列表
 			getCartListReqFun() { 
-				
 				this.$api.getCartList({}).then((res) => {
 					res.forEach((item) => {
 						item.selected = false;
@@ -157,12 +160,11 @@
 					});
 					this.goods_list = res;
 					this.isRequest = true;
-					uni.removeStorageSync('addCart')
+					uni.removeStorageSync('addCart');
 				});
 			},
 			chooseItem(item, index) {
 				this.goods_list[index].selected = !this.goods_list[index].selected;
-				// goods_list[bindex].selected = !goods_list[bindex].selected
 			},
 			toPay(){
 				if(this.goods_list.findIndex(target=>target.selected===true) == -1){
@@ -234,9 +236,6 @@
 		}
 	}
 </script>
-<style>
-	
-</style>
 <style lang="scss">
 	.shop-page {
 		background-color: #F7F7F7;

@@ -1,62 +1,59 @@
 <template>
 	<view class="after-sales">
-		<view class="sales-title">申请售后</view>
-		<view class="sales-choose">请选择你要退款的商品</view>
-		<view class="goods-box goods-box-single">
-			<view class="selected-box" @click="salesList.selected = !salesList.selected">
-				<view class="no-choose" v-if="!salesList.selected"></view>
-				<!-- <image src="/static/shop/gouxuan.png" mode="" ></image> -->
-				<image src="/static/shop/gouxuan.png" mode="" v-else></image>
-			</view>
-			<view class="goods-box">
-				<view class="goods-img">
-					<image :src="salesList.image" mode=""></image>
+		<view class="after-top">
+			<view class="sales-title">申请售后</view>
+			<view class="sales-choose">请选择你要退款的商品</view>
+			<view class="goods-box goods-box-single" v-for="(item, index) in salesList" :key="index">
+				<view class="selected-box" @click="chooseFun(item)">
+					<view class="no-choose" v-if="!item.selected"></view>
+					<image src="/static/shop/gouxuan.png" mode="" v-else></image>
 				</view>
-				<view class="content">
-					<view>
-						<view class="title">
-							<view class="text-box">
-								{{salesList.name}}
+				<view class="goods-box">
+					<view class="goods-img">
+						<image :src="item.cover" mode=""></image>
+					</view>
+					<view class="content">
+						<view>
+							<view class="title">
+								<view class="text-box">
+									{{item.name}}
+								</view>
+							</view>
+							<view class="info">
+								规格：{{item.goods_sku_name}}
 							</view>
 						</view>
-						<view class="info">
-							规格：
-							<span v-for="(citem, cindex) in salesList.specifications" :key="cindex">
-								{{citem}}  
-							</span>
-						</view>
-					</view>
-					<view class="content-bottom">
-						<view class="price">
-							<span class="big-text">￥{{salesList.price}}</span>
-						</view>
-						<view class="count">
-							<uni-number-box :min="1" v-model="salesList.count" @change="changeGoodsCount"></uni-number-box>
+						<view class="content-bottom">
+							<view class="price">
+								<span class="big-text">￥{{item.price}}</span>
+							</view>
+							<view class="count">
+								<uni-number-box :min="1" :max="item.maxCount" v-model="item.goods_count" @change="changeGoodsCount"></uni-number-box>
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-		</view>
-		<view class="refund-price">
-			<view>退款总金额</view>
-			<view>¥569</view>
-		</view>
-		<view class="refund-reason" @click="clickReason">
-			<view>退款理由</view>
-			<view class="refund-reason-right">
-				<view class="right-text">{{refundReasonValue}}</view>
-				<uni-icons type="bottom" color="#4B4B4B"></uni-icons>
+			<view class="refund-price">
+				<view>退款总金额</view>
+				<view>¥{{totalPrice}}</view>
+			</view>
+			<view class="refund-reason" @click="clickReason">
+				<view>退款理由</view>
+				<view class="refund-reason-right">
+					<view class="right-text">{{refundReasonValue}}</view>
+					<uni-icons type="bottom" color="#4B4B4B"></uni-icons>
+				</view>
+			</view>
+			<view class="else-reason">
+				<view>补充描述</view>
+				<input class="else-reason-input" type="text" placeholder-class="line" placeholder="请输入"  v-model="elseReason"  />
+			</view>
+			<view class="sales-bottom-tip">
+				建议您退款前先与客服人员沟通好，我们将做好每一步保障工作
 			</view>
 		</view>
-		<view class="else-reason">
-			<view>补充描述</view>
-			<input class="else-reason-input" type="text" placeholder-class="line" placeholder="请输入"  v-model="elseReason"  />
-		</view>
-		<view class="sales-bottom-tip">
-			建议您退款前先与客服人员沟通好，我们将做好每一步保障工作
-		</view>
-		<view class="after-sales-btn">发起退款申请</view>
-		<!-- 弹出层 -->
+		<view class="after-sales-btn" @click="clickApply">发起退款申请</view>
 		<!-- 弹出层 -->
 		<uni-popup ref="afterSalesPopup" type="bottom" background-color="#fff">
 			<view class="after-sales-popup">
@@ -72,7 +69,7 @@
 						:class="{popupChoose: refundReasonChoose == item.id}"
 						@click="clickItem(item)"
 					>
-						{{item.value}}
+						{{item.title}}
 					</view>
 				</view>
 				<view class="popup-btn" @click="surePop">确认</view>
@@ -87,54 +84,41 @@
 		},
 		data() {
 			return {
-				salesList: {
-					image: 'https://www.mescroll.com/demo/res/img/pd1.jpg',
-					name: '大国工匠精神谱系系列产品',
-					specifications: ['S', '黑色'],
-					price: 68.6,
-					count: 1,
-					selected: false,
-					show: true
-				},
+				salesList: [],
 				elseReason: '',
-				refundReasonList: [
-					{
-						value: '长时间未收到货物',
-						id: 0,
-					},
-					{
-						value: '包裹破损',
-						id: 1,
-					},
-					{
-						value: '尺码不对',
-						id: 2,
-					},
-					{
-						value: '有瑕疵',
-						id: 3,
-					},
-					{
-						value: '少发/漏发',
-						id: 4,
-					},
-					{
-						value: '错发',
-						id: 5,
-					},
-				],
-				refundReasonChoose: 0,
+				refundReasonList: [],
+				refundReasonChoose: 1,
 				refundReasonValue: '请选择',
 				temporaryValue: '', // 临时值
+				getId: '',
 			}
 		},
+		computed: {
+			totalPrice(){
+				let tPrice = 0
+				this.salesList.forEach(res=>{
+					if(res.selected){
+						tPrice += res.price * res.goods_count
+					}
+				})
+				return tPrice.toFixed(1)
+			},
+		},
+		onLoad(option) { //option为object类型，会序列化上个页面传递的参数
+			this.getId = option.id;
+			this.getRefundReasonReqFun();
+			this.salesList = this.$store.getters.goodsList;
+		},
 		methods: {
+			chooseFun(item) {
+				item.selected = !item.selected;
+			},
 			changeGoodsCount() {},
 			clickReason() {
 				this.$refs.afterSalesPopup.open('bottom');
 			},
 			clickItem(item) {
-				this.temporaryValue = item.value;
+				this.temporaryValue = item.title;
 				this.refundReasonChoose = item.id;
 			},
 			clickClose() {
@@ -143,6 +127,45 @@
 			surePop() {
 				this.clickClose();
 				this.refundReasonValue = this.temporaryValue || '请选择';
+			},
+			getRefundReasonReqFun() {
+				this.$api.getRefundReason({}).then((res) => {
+					this.refundReasonList = res;
+				});
+			},
+			clickApply() {
+				if(this.salesList.findIndex(target=>target.selected===true) == -1){
+					uni.showToast({ title: '请选择退款商品', icon:'none' });
+					return;
+				}
+				if (this.refundReasonValue == '请选择') {
+					uni.showToast({ title: '请选择退款理由', icon:'none' });
+					return;
+				}
+				let orders_goods = [];
+				this.salesList.forEach((item) => {
+					if(item.selected) {
+						orders_goods.push({
+							orders_goods_id: item.id,
+							goods_count: item.goods_count,
+						})
+					}
+				});
+				this.$api.getRefundApply({
+					reason_id: this.refundReasonChoose,
+					mark: this.elseReason,
+					orders_goods,
+				}).then((res) => {
+					// success
+					uni.showToast({ title: '提交成功', icon:'success' });
+					setTimeout(() => {
+						uni.$emit('getlist', {})//这里可以传个空,也可以传值过去
+						uni.navigateBack({
+						    delta: 2
+						});
+					}, 1000);
+				});
+				
 			}
 		}
 	}
@@ -154,6 +177,13 @@
 		height: 100vh;
 		padding: 68rpx 40rpx 100rpx 40rpx;
 		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		.after-top {
+			flex: 1;
+			overflow: auto;
+			padding-bottom: 60rpx;
+		}
 		.sales-title {
 			font-size: 44rpx;
 			margin-bottom: 12rpx;
@@ -177,17 +207,6 @@
 				position: absolute;
 				top: 50%;
 				margin-top: -18rpx;
-			}
-		}
-		.goods-img{
-			width: 200rpx;
-			height: 200rpx;
-			overflow: hidden;
-			border-radius: 8rpx;
-			border: 1px solid #f00;
-			image{
-				width: 100%;
-				height: 100%;
 			}
 		}
 		.goods-box{
@@ -222,7 +241,6 @@
 				height: 200rpx;
 				overflow: hidden;
 				border-radius: 8rpx;
-				border: 1px solid #f00;
 				image{
 					width: 100%;
 					height: 100%;
@@ -319,10 +337,7 @@
 			margin-top: 20rpx;
 		}
 		.after-sales-btn {
-			width: 90%;
-			position: fixed;
-			left: 5%;
-			bottom: 80rpx;
+			width: 100%;
 			height: 100rpx;
 			line-height: 100rpx;
 			text-align: center;

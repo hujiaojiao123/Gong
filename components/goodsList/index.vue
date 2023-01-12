@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="good-li" v-for="(item, index) in list" :key="index">
+		<view class="good-li" v-for="(item, index) in list" :key="index" @click="toClickFun(item)">
 			<image class="goodsImg" :src="item.cover"/>
 			<view class="goods-content">
 				<view>
@@ -9,7 +9,10 @@
 							{{item.name}}
 						</view>
 					</view>
-					<view class="info">
+					<view v-if="item.goods_sku_names" class="info" v-for="(itemName, indexName) in item.goods_sku_names" :key="indexName">
+						规格：{{itemName}}
+					</view>
+					<view v-if="item.goods_sku_name" class="info">
 						规格：
 						{{item.goods_sku_name}}  
 					</view>
@@ -22,12 +25,12 @@
 				</view>
 				<view class="status-content-bottom" v-if="showStatus">
 					<view class="s-b-top">
-						<span class="price-top">¥569</span>
-						<span class="price-top-num">X2</span>
+						<span class="price-top">¥{{item.price}}</span>
+						<span class="price-top-num">X{{item.goods_amount}}</span>
 					</view>
 					<view class="s-b-bottom">
 						<view class="price">
-							<span class="big-text">实付款￥{{item.price}}</span>
+							<span class="big-text">实付款￥{{item.amount}}</span>
 						</view>
 						<view class="bottom-right-mes">已发货</view>
 					</view>
@@ -57,6 +60,11 @@
 				default(){
 					return false
 				}
+			}
+		},
+		methods: {
+			toClickFun(item) {
+				this.$emit('toClickFun', item);
 			}
 		}
 	}

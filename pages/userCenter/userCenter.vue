@@ -29,13 +29,13 @@
 					</view>
 					<image class="user-list-item-arrow" src="../../static/order/arrow.png"></image>
 				</view>
-				<view class="user-list-item">
+				<button class="user-list-item item-button" type='default' open-type='contact'>
 					<view class="user-list-item-left">
 						<image class="user-customer-img" src="../../static/userCenter/customer.png"></image>
-						<view>联系客服</view>
+						<view class="item-button-text">联系客服</view>
 					</view>
 					<image class="user-list-item-arrow" src="../../static/order/arrow.png"></image>
-				</view>
+				</button>
 			</view>
 		</view>
 	</view>
@@ -153,13 +153,14 @@
 		}
 		.user-list {
 			background-color: #fff;
-			padding: 60px 34rpx 60rpx 46rpx;
+			padding: 60rpx 34rpx 60rpx 46rpx;
 			box-sizing: border-box;
 			.user-list-item {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				margin-bottom: 80rpx;
+				margin-bottom: 35rpx;
+				line-height: 88rpx;
 				.user-order-img {
 					width: 36rpx;
 					height: 36rpx;
@@ -190,6 +191,14 @@
 		}
 		button::after {
 			border: none;
+		}
+		.item-button {
+			background: none;
+			padding: 0;
+			line-height: 88rpx;
+			.item-button-text {
+				font-size: 32rpx;
+			}
 		}
 	}
 </style>

@@ -1,4 +1,4 @@
-export const baseURL = 'http://www.gong-official.com/';
+export const baseURL = 'https://www.gong-official.com/';
  
 // export const baseURL = 'http://test.gong-official.com/';
 export const request = (options) => {

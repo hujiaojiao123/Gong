@@ -1,8 +1,11 @@
 <template>
 	<view class="list-page">
-		<view class="list-page-container" ref="container" :style="{top: statusBarHeight}">廾</view>
+		<view class="list-page-container" ref="container" :style="{top: statusBarHeight}">
+			<image src="/static/index/logo_index.png"></image>
+		</view>
 		<swiper class="index-swiper"
 			interval="3000" duration="300" circular="true"
+			autoplay="true"
 			@change="changeSwiper"
 			>
 		   <swiper-item v-for="(item, index) in goods" :key="index">
@@ -34,8 +37,7 @@
 	        }
 	    },
 		mounted() {
-			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
-			
+			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 12 + 'px';
 		},
 		onLoad() {
 			this.getIndexFun();
@@ -47,12 +49,11 @@
 				});
 			},
 			changeSwiper(e) {
-				console.log(e)
 				this.swiperCurrent = e.detail.current;
 			},
 			toDetail(id) {
 				uni.navigateTo({
-					url: '/pages/detail/detail?id=' + this.goods[this.swiperCurrent].id,
+					url: '/pages/detail/detail?id=' + this.goods[this.swiperCurrent].goods_id,
 				});
 			}
 	    },
@@ -70,6 +71,10 @@
 			left: 36rpx;
 			line-height: 70rpx;
 			z-index: 10;
+			image {
+				width: 48rpx;
+				height: 56rpx;
+			}
 		}
 		.index-swiper {
 			height: 100%;

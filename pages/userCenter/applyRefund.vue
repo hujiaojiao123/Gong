@@ -1,51 +1,48 @@
 <template>
 	<view class="apply-refund">
 		<view class="apply-title">
-			<view class="title-top">申请退款中</view>
-			<view>退款总金额：¥480.00</view>
-			<view>发起时间：2022-07-05 10:50</view>
+			<view class="title-top">{{getStatusName}}</view>
+			<view>退款总金额：¥{{orderDetailInfo.refund[0].amount || ''}}</view>
+			<view>发起时间：{{orderDetailInfo.refund[0].created_at || ''}}</view>
 			<image class="apply-bj" src="../../static/userCenter/applyBj.png"></image>
 		</view>
 		<view class="apply-refund-content">
-			<goodsList :list="confirmList" :showCount="true"></goodsList>
+			<goodsList v-if="orderDetailInfo.goodsList.length != 0" :list="orderDetailInfo.goodsList" :showCount="true"></goodsList>
 			<view class="order-detail-mes">
 				<view class="o-price all-price">
 					<view>商品总额</view>
-					<view>¥569</view>
+					<view>¥{{orderDetailInfo.amount_goods || ''}}</view>
 				</view>
 				<view class="o-price sale-price">
 					<view>优惠金额</view>
-					<view>-¥10.00</view>
+					<view>-¥{{orderDetailInfo.amount_minus || ''}}</view>
 				</view>
 				<view class="o-price reality-price">
 					<view class="reality-price-left">实付款</view>
-					<view>¥<span class="reality-price-right">480</span></view>
+					<view>¥<span class="reality-price-right">{{orderDetailInfo.amount || ''}}</span></view>
 				</view>
 			</view>
 			<view class="confirm-adress">
 				<view class="ad-title">收货信息</view>
-				<view class="ad-content" @click="toAdress">
+				<view class="ad-content" v-if="orderDetailInfo.address">
 					<view>
-						<view class="ad-content-mes">沙林 15959225155</view>
-						<view class="ad-content-mes ad-content-adress">北京市朝阳区姚家园东里8号楼一单元803</view>
+						<view class="ad-content-mes">{{orderDetailInfo.address.name}} {{orderDetailInfo.address.mobile}}</view>
+						<view class="ad-content-mes ad-content-adress">
+							{{orderDetailInfo.address.province + orderDetailInfo.address.city + orderDetailInfo.address.area + orderDetailInfo.address.address}}
+						</view>
 					</view>
-					<image class="ad-content-arrow" src="../../static/order/arrow.png"></image>
 				</view>
 			</view>
 			<view class="order-bottom-mes">
 				<view class="order-b-title">订单信息</view>
 				<view class="order-b-content">
 					<view>订单编号</view>
-					<view>89898989898989</view>
-				</view>
-				<view class="order-b-content">
-					<view>交易码</view>
-					<view>89898989iiiipppp898989</view>
+					<view>{{orderDetailInfo.orderno || ''}}</view>
 				</view>
 			</view>
 			<view class="order-detail-btn">
-				<view class="b-btn order-detail-btn-left">联系客服</view>
-				<view class="b-btn order-detail-btn-right" @click="toAfterSales">撤销申请</view>
+				<button class="b-btn order-detail-btn-left" type='default' open-type='contact'>联系客服</button>
+				<view v-if="orderDetailInfo.refund[0].status == 0" class="b-btn order-detail-btn-right" @click="revokeFun">撤销申请</view>
 			</view>
 		</view>
 	</view>
@@ -59,24 +56,69 @@
 		},
 		data() {
 			return {
-				confirmList: [
-					{
-						image: 'https://www.mescroll.com/demo/res/img/pd1.jpg',
-						name: '大国工匠精神谱系系列产品',
-						specifications: ['S', '黑色'],
-						price: 68.6,
-						count: 1,
-						selected: false,
-						show: true
-					},
-				]
+				orderDetailInfo: {
+					goodsList: [],
+				},
+				getId: '',
 			}
 		},
+		computed: {
+			getStatusName() {
+				if (this.orderDetailInfo.refund[0].status == 0) {
+					return '申请退款中'
+				} 
+				if (this.orderDetailInfo.refund[0].status == 1) {
+					return '已退款'
+				} 
+				if (this.orderDetailInfo.refund[0].status == 2) {
+					return '拒绝退款'
+				} 
+				if (this.orderDetailInfo.refund[0].status == 3) {
+					return '取消退款'
+				} 
+			}
+		},
+		onLoad(option) { //option为object类型，会序列化上个页面传递的参数
+			this.getId = option.id;
+			this.getOrderInfoReqFun(option.id);
+		},
 		methods: {
-			toAfterSales() {
-				uni.navigateTo({
-					url: '/pages/userCenter/afterSales',
-				})
+			revokeFun() {
+				this.$api.getRefundCancel({
+					refund_id: this.orderDetailInfo.refund[0].id,
+				}).then((res) => {
+					uni.showToast({ // 提示
+						title: '撤销成功',
+						icon: 'success'
+					});
+					setTimeout(() => {
+						uni.$emit('getlist', {})//这里可以传个空,也可以传值过去
+						uni.navigateBack({
+							delta: 1, // 返回层数，2则上上页
+						});
+					}, 1000);
+				});
+			},
+			getOrderInfoReqFun(id) {
+				this.$api.getOrderInfo({
+					order_id: id,
+				}).then((res) => {
+					let arr = [];
+					this.orderDetailInfo = res;
+					res.refund[0].goods.forEach((item) => {
+						arr.push({
+							cover: item.order_goods.product.cover,
+							name: item.order_goods.product.name,
+							goods_sku_name: item.order_goods.sku.name,
+							price: item.order_goods.price,
+							goods_count: item.order_goods.goods_count,
+							selected: false,
+							id: item.order_goods.id,
+							maxCount: item.order_goods.goods_count,
+						});
+					});
+					this.orderDetailInfo.goodsList = arr;
+				});
 			}
 		}
 	}
@@ -85,7 +127,6 @@
 <style scoped lang="less">
 	.apply-refund {
 		background-color: #F7F7F7;
-		height: 100vh;
 		.apply-title {
 			width: 100%;
 			height: 290rpx;
@@ -129,7 +170,8 @@
 			}
 			.ad-content-mes {
 				font-size: 28rpx;
-				
+				color: #333;
+				line-height: 46rpx;
 			}
 			.ad-content-arrow {
 				width: 12rpx;
@@ -195,6 +237,11 @@
 				font-size: 28rpx;
 				margin-right: 36rpx;
 				margin-top: 36rpx;
+				background: none;
+			}
+			.order-detail-btn-left {
+				height: 94rpx;
+				padding: 0;
 			}
 		}
 	}

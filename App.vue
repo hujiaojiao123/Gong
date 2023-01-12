@@ -17,4 +17,7 @@
 	* {
 		box-sizing: border-box;
 	}
+	button::after {
+	   border: none;
+	}
 </style>

@@ -2,7 +2,7 @@
 	<view class="page-detail" v-if="detailData != null">
 		<view class="detail-banner">
 			<swiper class="b-top" 
-			 interval="3000" duration="300" circular="true"
+			 interval="3000" duration="300" circular="true" autoplay="true"
 			@change="changeSwiper"
 			>
 			  <swiper-item v-for="(item, index) in detailData.pictures" :key="index">
@@ -18,21 +18,25 @@
 		</view>
 		<!-- 其他颜色列表展示 -->
 		<view class="else-color">
-			<view class="else-color-list" v-for="(item, index) in detailData.recommend_goods" :key="index">
+			<view class="else-color-list" 
+				@click="toNewDetail(item.id)"
+				v-for="(item, index) in detailData.recommend_goods" 
+				:key="index"
+			>
 				<image :src="item.cover"></image>
 			</view>
 		</view>
 		<!-- 标题 -->
 		<view class="d-content">
-			<view class="d-titile">{{detailData.name}}</view>
+			<view class="d-titile">{{detailData.name || ''}}</view>
 			<view class="d-label">
-				<view>货号：{{detailData.cargo}}</view>
+				<view>货号：{{detailData.cargo || ''}}</view>
 				<view v-if="detailData.status != 1">已售{{detailData.sale_number || 0}}件</view>
 			</view>
 			<view class="d-message">
 				<view class="d-price" v-if="detailData.status != 1">
-					<view class="d-price-new">¥{{detailData.price}}</view>
-					<view class="d-price-old">¥{{detailData.price_sale}}</view>
+					<view class="d-price-new">¥{{detailData.price || ''}}</view>
+					<view class="d-price-old">¥{{detailData.price_sale || ''}}</view>
 				</view>
 				<view class="d-price" v-else>¥--</view>
 				<view class="d-m-right"  v-if="detailData.status != 1">
@@ -45,7 +49,7 @@
 		 <view class="d-hot">
 			 <view class="hot-title">热门推荐</view>
 			 <scroll-view scroll-with-animation :scroll-x="true" class="hot-scroll">
-			 	<view class="hot-item" v-for="(item, index) in hotList" @click="toDetail(index)"
+			 	<view class="hot-item" v-for="(item, index) in hotList" @click="toNewDetail(item.id)"
 			 	 :key="item.id">
 			 		<view class="hot-image">
 						<image :src="item.cover"></image>
@@ -57,10 +61,14 @@
 		 </view>
 		 <!-- 底部 -->
 		 <view class="detail-foot">
-			 <view class="customer">
+			 <button class="customer" type='default' open-type='contact'>
+				 <image src="../../static/detail/customer.png"></image>
+				<view>客服</view>
+			 </button>
+			 <!-- <view class="customer">
 				 <image src="../../static/detail/customer.png"></image>
 				 客服
-			 </view>
+			 </view> -->
 			 <view class="add-shopcart" @click="addShopCart">
 				 <image src="../../static/detail/shop.png"></image>
 				 加入购物袋
@@ -90,7 +98,6 @@
 				 </view>
 				 <view class="pop-btn pop-btn-disable" v-if="detailData.status == 1">暂未发售</view>
 				 <view class="pop-btn" v-else @click="popSure">确认</view>
-				 
 			 </view>
 		 </uni-popup>
 	</view>
@@ -108,34 +115,24 @@
 					pictures: [],
 					recommend_goods: [], // 更多款式
 				},
-				swiperImg: [
-					{img: 'https://www.mescroll.com/img/swiper1.jpg', id: '0'},
-					{img: 'https://www.mescroll.com/img/swiper2.jpg', id: '1'},
-					{img: 'https://www.mescroll.com/img/swiper2.jpg', id: '2'},
-				],
 				swiperCurrent: 0,
-				hotList: [
-					{ name: '新青年运动休闲背心 经典款', id: '0', price: '569' },
-					{ name: '新青年背心', id: '1', price: '569' },
-					{ name: '新青年运动休闲背心 经典款', id: '2', price: '569' },
-					{ name: '新青年运动休闲背心 经典款', id: '3', price: '569' },
-					{ name: '新青年运动休闲背心 经典款', id: '4', price: '569' },
-					{ name: '新青年运动休闲背心 经典款', id: '5', price: '569' },
-				],
+				hotList: [],
 				showShopPop: false,
-				sizeData: [
-					
-				],
+				sizeData: [],
 				popChoose: '',
 				clickStatus: 1, // 1：加入购物车 2:立即购买
 			}
 	    },
 		onLoad(option) { //option为object类型，会序列化上个页面传递的参数
-			console.log('option.id========', option.id); //打印出上个页面传递的参数。
 			this.getDetailFun(option.id || 1);
 			this.getHotFun();
 		},
 	    methods: {
+			toNewDetail(id) {
+				uni.redirectTo({
+					url: '/pages/detail/detail?id=' + id,
+				});
+			},
 			requestSussessFun() {
 				console.log('请求成功的要做的事情');
 				this.showChoosePop();
@@ -393,9 +390,16 @@
 			font-size: 24rpx;
 			height: 90rpx;
 			justify-content: center;
+			background: none;
+			line-height: auto;
+			margin: 0;
+			padding: 0;
 			image {
 				width: 44rpx;
 				height: 40rpx;
+			}
+			view {
+				line-height: 50rpx;
 			}
 			
 		}
