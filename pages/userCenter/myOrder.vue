@@ -82,7 +82,8 @@
 			getOrderListReqFun() {
 				this.isRequestFinish = false;
 				this.$api.getOrderList({}).then((res) => {
-					this.orderList = res;
+					console.log(res[1]);
+					this.orderList = [res[1]]
 					this.isRequestFinish = true;
 				});
 			},
@@ -92,7 +93,7 @@
 
 <style lang="less">
 	.my-order-page {
-		height: 100%;
+		min-height: 100vh;
 		background-color: #f7f7f7;
 		box-sizing: border-box;
 		.order-page-padding {

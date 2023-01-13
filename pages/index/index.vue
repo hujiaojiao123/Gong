@@ -78,7 +78,6 @@
 			z-index: 10;
 			display: flex;
 			align-items: center;
-			border-bottom: 1px solid rgba(0,0,0,0.1);
 			image {
 				width: 82rpx;
 				height: 86rpx;
@@ -103,13 +102,12 @@
 			.dot {
 				height: 4rpx;
 				transition: all .6s;
-				background: rgba(0, 0, 0, .16);
+				background: rgba(255, 255, 255, .16);
 			}
 		
 			.active {
 				height: 4;
-				background: #fff;
-				opacity: 0.6;
+				background: rgba(255, 255, 255, .6);
 			}
 		}
 		.index-btn {

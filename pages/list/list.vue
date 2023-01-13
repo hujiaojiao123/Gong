@@ -144,7 +144,7 @@
 
 <style lang="scss">
 	.list-page {
-		background-color: #f7f7f7;
+		background-color: #fff;
 		height: calc(100vh);
 		display: flex;
 		flex-direction: column;
