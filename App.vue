@@ -23,4 +23,5 @@
 	image {
 		will-change: transform;
 	}
+	
 </style>

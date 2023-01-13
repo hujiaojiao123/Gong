@@ -8,7 +8,7 @@ const LoginMixin = {
 	},
 	onShow() {
 		this.getToken = uni.getStorageSync('token');
-		this.avatarUrl = uni.getStorageSync('avatarUrl') || '../../static/userCenter/weixin.png';
+		this.avatarUrl = uni.getStorageSync('avatarUrl') || '/static/userCenter/weixin.png';
 		this.nickName = uni.getStorageSync('nickName') || '微信用户';
 	},
 	methods: {

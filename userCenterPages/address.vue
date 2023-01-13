@@ -1,42 +1,47 @@
 <template>
 	<view class="address-page">
-		<view class="address-item">
-			<view class="item-top">收货人</view>
-			<input class="item-input" type="text" @input="inputNameFun" placeholder-class="line" placeholder="请填写收货人姓名" v-model="name"  />
-			<view v-show="isShowNameTip" class="red-tip">请输入收货人</view>
+		<headerNav :showBack="true" title="收货地址" background="#EDEDED"></headerNav>
+		<view class="address-page-content">
+			<view class="address-item">
+				<view class="item-top">收货人</view>
+				<input class="item-input" type="text" @input="inputNameFun" placeholder-class="line" placeholder="请填写收货人姓名" v-model="name"  />
+				<view v-show="isShowNameTip" class="red-tip">请输入收货人</view>
+			</view>
+			<view class="address-item">
+				<view class="item-top">手机号码</view>
+				<input class="item-input" type="text" 
+					placeholder-class="line" placeholder="请填写收货人手机号" 
+					@input="inputPhoneFun"
+					maxlength="11"
+					v-model="mobile"
+				/>
+				<view v-show="isShowPhoneTip" class="red-tip">请输入正确的手机号</view>
+			</view>
+			<view class="address-item">
+				<view class="item-top">收货地区</view>
+				<AddressPicker class="address-picker" @change="change" :value="chooseValue">{{planLocate}}</AddressPicker>
+				<view class="address-line"></view>
+				<!-- <input class="item-input" disabled="" type="text" placeholder-class="line" placeholder="请选择收货地区"  v-model="phone"  /> -->
+			</view>
+			<view class="address-item">
+				<view class="item-top">详细地址</view>
+				<input class="item-input" type="text" placeholder-class="line" 
+					@input="inputAddressFun" placeholder="请填写详细地址"  v-model="address"  />
+				<view v-show="isShowAddressTip" class="red-tip">请输入详细地址</view>
+			</view>
+			<view class="address-btn" @click="saveFun">保存</view>
 		</view>
-		<view class="address-item">
-			<view class="item-top">手机号码</view>
-			<input class="item-input" type="text" 
-				placeholder-class="line" placeholder="请填写收货人手机号" 
-				@input="inputPhoneFun"
-				maxlength="11"
-				v-model="mobile"
-			/>
-			<view v-show="isShowPhoneTip" class="red-tip">请输入正确的手机号</view>
-		</view>
-		<view class="address-item">
-			<view class="item-top">收货地区</view>
-			<AddressPicker class="address-picker" @change="change" :value="chooseValue">{{planLocate}}</AddressPicker>
-			<view class="address-line"></view>
-			<!-- <input class="item-input" disabled="" type="text" placeholder-class="line" placeholder="请选择收货地区"  v-model="phone"  /> -->
-		</view>
-		<view class="address-item">
-			<view class="item-top">详细地址</view>
-			<input class="item-input" type="text" placeholder-class="line" 
-				@input="inputAddressFun" placeholder="请填写详细地址"  v-model="address"  />
-			<view v-show="isShowAddressTip" class="red-tip">请输入详细地址</view>
-		</view>
-		<view class="address-btn" @click="saveFun">保存</view>
 	</view>
 </template>
 
 <script>
-	import AddressPicker from "../../components/lingdang-AddressPicker/AddressPicker.vue"
-	import AllAddress from '../../components/lingdang-AddressPicker/AddressData.js'
+	import AddressPicker from "@/components/lingdang-AddressPicker/AddressPicker.vue"
+	import AllAddress from '@/components/lingdang-AddressPicker/AddressData.js';
+	import headerNav from '@/components/headerNav/index.vue';
 	export default {
 		components: {
 			AddressPicker,
+			headerNav,
 		},
 		data() {
 			return {
@@ -145,9 +150,15 @@
 <style lang="less">
 	.address-page {
 		height: 100vh;
-		background-color: #f7f7f7;
+		background-color: #fff;
 		box-sizing: border-box;
-		padding: 100rpx 50rpx;
+		display: flex;
+		flex-direction: column;
+		.address-page-content {
+			padding: 100rpx 50rpx;
+			flex: 1;
+			overflow: auto;
+		}
 		.address-item {
 			margin-bottom: 80rpx;
 			.item-top {

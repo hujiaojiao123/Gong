@@ -21,7 +21,8 @@
 		{
 			"path": "pages/shopping/shopping",
 			"style": {
-				"navigationBarTitleText": "购物袋"
+				"navigationBarTitleText": "购物袋",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -29,43 +30,54 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
-		},
+		}
+	],
+	"subpackages": [
 		{
-			"path": "pages/userCenter/myOrder",
-			"style": {
-				"navigationBarTitleText": "我的订单"
-				// "enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/userCenter/address",
-			"style": {
-				"navigationBarTitleText": "收货地址"
-			}
-		},
-		// 订单确认页
-		{
-			"path": "pages/order/orderConfirm",
-			"style": {}
-		},
-		{
-			"path": "pages/userCenter/orderDetail",
-			"style": {}
-		},
-		{
-			"path": "pages/userCenter/afterSales",
-			"style": {}
-		},
-		{
-			"path": "pages/userCenter/applyRefund",
-			"style": {}
+			"root": "userCenterPages",
+			"pages": [
+				{
+					"path": "address",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "myOrder",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "orderDetail",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "afterSales",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "applyRefund",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "orderConfirm",
+					"style": {}
+				}
+			]
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#EDEDED",
+		"backgroundColor": "#EDEDED"
 	},
 	"uniIdRouter": {},
 	"tabBar": {

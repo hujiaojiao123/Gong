@@ -1,58 +1,64 @@
 <template>
 	<view class="apply-refund">
-		<view class="apply-title">
-			<view class="title-top">{{getStatusName}}</view>
-			<view>退款总金额：¥{{orderDetailInfo.refund[0].amount || ''}}</view>
-			<view>发起时间：{{orderDetailInfo.refund[0].created_at || ''}}</view>
-			<image class="apply-bj" src="../../static/userCenter/applyBj.png"></image>
-		</view>
-		<view class="apply-refund-content">
-			<goodsList v-if="orderDetailInfo.goodsList.length != 0" :list="orderDetailInfo.goodsList" :showCount="true"></goodsList>
-			<view class="order-detail-mes">
-				<view class="o-price all-price">
-					<view>商品总额</view>
-					<view>¥{{orderDetailInfo.amount_goods || ''}}</view>
-				</view>
-				<view class="o-price sale-price">
-					<view>优惠金额</view>
-					<view>-¥{{orderDetailInfo.amount_minus || ''}}</view>
-				</view>
-				<view class="o-price reality-price">
-					<view class="reality-price-left">实付款</view>
-					<view>¥<span class="reality-price-right">{{orderDetailInfo.amount || ''}}</span></view>
-				</view>
+		<headerNav :showBack="true" background="#fff"></headerNav>
+		<view class="apply-top">
+			<view class="apply-title">
+				<view class="title-top">{{getStatusName}}</view>
+				<view>退款总金额：¥{{orderDetailInfo.refund[0].amount || ''}}</view>
+				<view>发起时间：{{orderDetailInfo.refund[0].created_at || ''}}</view>
+				<image class="apply-bj" src="/static/userCenter/applyBj.png"></image>
 			</view>
-			<view class="confirm-adress">
-				<view class="ad-title">收货信息</view>
-				<view class="ad-content" v-if="orderDetailInfo.address">
-					<view>
-						<view class="ad-content-mes">{{orderDetailInfo.address.name}} {{orderDetailInfo.address.mobile}}</view>
-						<view class="ad-content-mes ad-content-adress">
-							{{orderDetailInfo.address.province + orderDetailInfo.address.city + orderDetailInfo.address.area + orderDetailInfo.address.address}}
+			<view class="apply-refund-content">
+				<goodsList v-if="orderDetailInfo.goodsList.length != 0" :list="orderDetailInfo.goodsList" :showCount="true"></goodsList>
+				<view class="order-detail-mes">
+					<view class="o-price all-price">
+						<view>商品总额</view>
+						<view>¥{{orderDetailInfo.amount_goods || ''}}</view>
+					</view>
+					<view class="o-price sale-price">
+						<view>优惠金额</view>
+						<view>-¥{{orderDetailInfo.amount_minus || ''}}</view>
+					</view>
+					<view class="o-price reality-price">
+						<view class="reality-price-left">实付款</view>
+						<view>¥<span class="reality-price-right">{{orderDetailInfo.amount || ''}}</span></view>
+					</view>
+				</view>
+				<view class="confirm-adress">
+					<view class="ad-title">收货信息</view>
+					<view class="ad-content" v-if="orderDetailInfo.address">
+						<view>
+							<view class="ad-content-mes">{{orderDetailInfo.address.name}} {{orderDetailInfo.address.mobile}}</view>
+							<view class="ad-content-mes ad-content-adress">
+								{{orderDetailInfo.address.province + orderDetailInfo.address.city + orderDetailInfo.address.area + orderDetailInfo.address.address}}
+							</view>
 						</view>
 					</view>
 				</view>
-			</view>
-			<view class="order-bottom-mes">
-				<view class="order-b-title">订单信息</view>
-				<view class="order-b-content">
-					<view>订单编号</view>
-					<view>{{orderDetailInfo.orderno || ''}}</view>
+				<view class="order-bottom-mes">
+					<view class="order-b-title">订单信息</view>
+					<view class="order-b-content">
+						<view>订单编号</view>
+						<view>{{orderDetailInfo.orderno || ''}}</view>
+					</view>
 				</view>
+				
 			</view>
-			<view class="order-detail-btn">
-				<button class="b-btn order-detail-btn-left" type='default' open-type='contact'>联系客服</button>
-				<view v-if="orderDetailInfo.refund[0].status == 0" class="b-btn order-detail-btn-right" @click="revokeFun">撤销申请</view>
-			</view>
+		</view>
+		<view class="order-detail-btn">
+			<button class="b-btn order-detail-btn-left" type='default' open-type='contact'>联系客服</button>
+			<view v-if="orderDetailInfo.refund[0].status == 0" class="b-btn order-detail-btn-right" @click="revokeFun">撤销申请</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import headerNav from '@/components/headerNav/index.vue';
 	import goodsList from '@/components/goodsList/index.vue';
 	export default {
 		components: {
 			goodsList,
+			headerNav,
 		},
 		data() {
 			return {
@@ -129,7 +135,15 @@
 
 <style scoped lang="less">
 	.apply-refund {
-		background-color: #F7F7F7;
+		background-color: #fff;
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		box-sizing: border-box;
+		.apply-top {
+			flex: 1;
+			overflow: auto;
+		}
 		.apply-title {
 			width: 100%;
 			height: 290rpx;
@@ -154,7 +168,7 @@
 			}
 		}
 		.apply-refund-content {
-			padding: 0 40rpx 230rpx 40rpx;
+			padding: 0 40rpx;
 			box-sizing: border-box;
 		}
 		.confirm-adress {
@@ -183,7 +197,7 @@
 		}
 		.order-detail-mes {
 			margin-top: 20rpx;
-			background-color: #fff;
+			background-color: #f7f7f7;
 			box-sizing: border-box;
 			padding: 50rpx 32rpx;
 			margin-bottom: 44rpx;
@@ -197,7 +211,7 @@
 				color: #999;
 			}
 			.reality-price {
-				margin-top: 6rpx;
+				align-items: center;
 			}
 			.reality-price-left {
 				font-size: 26rpx;
@@ -205,6 +219,7 @@
 			.reality-price-right {
 				font-size: 40rpx;
 				margin-left: 6rpx;
+				font-weight: bold;
 			}
 		}
 		.order-bottom-mes {
@@ -222,14 +237,12 @@
 			}
 		}
 		.order-detail-btn {
-			position: fixed;
 			height: 230rpx;
 			background-color: #fff;
-			bottom: 0;
 			width: 100%;
-			left: 0;
 			display: flex;
 			justify-content: flex-end;
+			border-top: 1px solid #DEDEDE;
 			.b-btn {
 				width: 240rpx;
 				height: 90rpx;

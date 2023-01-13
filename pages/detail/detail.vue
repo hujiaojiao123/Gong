@@ -6,10 +6,12 @@
 			@change="changeSwiper"
 			>
 			  <swiper-item v-for="(item, index) in detailData.pictures" :key="index">
-			    <image class="detail-banner-img" :src="item"></image>
+			    <image class="detail-banner-img" :src="item" mode="widthFix"></image>
 			  </swiper-item>
 			</swiper>
-			<!-- 轮播指示点样式修改 -->
+		</view>
+		<!-- 轮播指示点样式修改 -->
+		<view class="dot-box">
 			<view class="dots">
 				<block v-for="(item, index) in detailData.pictures.length" :key="index">
 					<view :style="{width: (detailData.pictures.length ? Math.floor(100 / detailData.pictures.length) + '%' : '50%')}" class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
@@ -40,7 +42,7 @@
 				</view>
 				<view class="d-price" v-else>¥--</view>
 				<view class="d-m-right"  v-if="detailData.status != 1">
-					<image src="../../static/detail/sf.png"></image>
+					<image src="/static/detail/sf.png"></image>
 					顺丰包邮
 				</view>
 			</view>
@@ -63,18 +65,14 @@
 		 <!-- 底部 -->
 		 <view class="detail-foot">
 			 <button class="customer" type='default' open-type='contact'>
-				 <image src="../../static/detail/customer.png"></image>
+				 <image src="/static/detail/customer.png"></image>
 				<view>客服</view>
 			 </button>
-			 <!-- <view class="customer">
-				 <image src="../../static/detail/customer.png"></image>
-				 客服
-			 </view> -->
 			 <view class="add-shopcart" @click="addShopCart">
-				 <image src="../../static/detail/shop.png"></image>
+				 <image src="/static/detail/shop.png"></image>
 				 加入购物袋
 			 </view>
-			 <view class="purchase" @click="toBuy">立刻购买</view>
+			 <view class="purchase" @click="toBuy">立即购买</view>
 		 </view>
 		 <!-- 弹出层 -->
 		 <uni-popup ref="popup" type="bottom" background-color="#fff">
@@ -202,14 +200,16 @@
 				]
 				this.$store.dispatch('chooseArr', chooseArr);
 				uni.navigateTo({
-					url: '/pages/order/orderConfirm',
+					url: '../../userCenterPages/orderConfirm',
 				});
 			},
 			getDetailFun(id) {
 				this.$api.getInfo({
 				  id,
 				}).then((res)=>{
-					let content = res.content.replace(/\<img/gi,'<img class="imgStyle"').replace(/\<p/gi,'<p class="pStyle"');
+					let content = res.content.replace(/\<img/gi,'<img class="imgStyle"')
+					.replace(/\<p/gi,'<p class="pStyle"')
+					.replace(/\<br/gi,'<br class="brStyle"');
 					res.content = content;
 					// res.content.replace(/\<p/gi,'<p class="pStyle"');
 					console.log(content);
@@ -250,7 +250,7 @@
 		background-color: #fff;
 		.b-top {
 			width: 100%;
-			height: 630rpx;
+			height: 100%;
 		}
 		.detail-banner-img {
 			width: 100%;
@@ -259,7 +259,7 @@
 	}
 	.else-color {
 		display: flex;
-		padding: 35rpx 0 60rpx 0;
+		padding: 0 0 60rpx 0;
 		justify-content: center;
 		background-color: #fff;
 		.else-color-list {
@@ -272,17 +272,22 @@
 				height: 100%;
 			}
 		}
+		.else-color-list:last-child {
+			margin-right: 0;
+		}
+	}
+	.dot-box {
+		width: 100%;
+		background-color: #fff;
+		padding: 64rpx 0; 
+		display: flex;
+		justify-content: center;
 	}
 	.dots {
-		position: absolute;
-		bottom: 36rpx;
-		z-index: 4;
 		display: flex;
 		justify-content: center;
 		width: 168rpx;
-	
 		.dot {
-			// width: 24rpx;
 			height: 4rpx;
 			transition: all .6s;
 			background: rgba(0, 0, 0, .16);
@@ -537,6 +542,9 @@
 		color: #666;
 		margin: 0;
 		border:none;
-		
+		background-color: #fff;
+	}
+	.brStyle {
+		height: 0;
 	}
 </style>

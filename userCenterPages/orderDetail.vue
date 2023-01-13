@@ -1,5 +1,6 @@
 <template>
 	<view class="order-detail">
+		<headerNav :showBack="true" background="#fff"></headerNav>
 		<view class="detail-top">
 			<view class="confirm-title">{{orderDetailInfo.status_name}}</view>
 			<goodsList v-if="orderDetailInfo.goodsList.length != 0" :list="orderDetailInfo.goodsList" :showCount="true"></goodsList>
@@ -26,7 +27,7 @@
 							{{orderDetailInfo.address.province + orderDetailInfo.address.city + orderDetailInfo.address.area + orderDetailInfo.address.address}}
 						</view>
 					</view>
-					<image v-if="orderDetailInfo.status == 1 || orderDetailInfo.status == 4" class="ad-content-arrow" src="../../static/order/arrow.png"></image>
+					<image v-if="orderDetailInfo.status == 1 || orderDetailInfo.status == 4" class="ad-content-arrow" src="/static/order/arrow.png"></image>
 				</view>
 			</view>
 			<view class="detail-wuliu" v-if="orderDetailInfo.express_no">
@@ -56,10 +57,12 @@
 </template>
 
 <script>
+	import headerNav from '@/components/headerNav/index.vue';
 	import goodsList from '@/components/goodsList/index.vue';
 	export default {
 		components: {
 			goodsList,
+			headerNav
 		},
 		data() {
 			return {
@@ -89,14 +92,14 @@
 			},
 			toAfterSales() {
 				uni.navigateTo({
-					url: '/pages/userCenter/afterSales?id=' + this.getId,
+					url: '../userCenterPages/afterSales?id=' + this.getId,
 				});
 				this.$store.dispatch('goodsList', this.orderDetailInfo.goodsList);
 			},
 			toAddress() {
 				if (this.orderDetailInfo.status == 1 || this.orderDetailInfo.status == 4) {
 					uni.navigateTo({
-						url: '/pages/userCenter/address',
+						url: '../userCenterPages/address',
 					})
 				}
 			},
@@ -150,7 +153,7 @@
 
 <style scoped lang="less">
 	.order-detail {
-		background-color: #F7F7F7;
+		background-color: #fff;
 		height: 100vh;
 		box-sizing: border-box;
 		display: flex;
@@ -215,7 +218,7 @@
 		}
 		.order-detail-mes {
 			margin-top: 20rpx;
-			background-color: #fff;
+			background-color: #f7f7f7;
 			box-sizing: border-box;
 			padding: 50rpx 32rpx;
 			margin-bottom: 44rpx;
@@ -223,13 +226,18 @@
 				display: flex;
 				justify-content: space-between;
 			}
-			.all-price, .sale-price {
+			.all-price {
 				margin-bottom: 22rpx;
 				font-size: 24rpx;
 				color: #999;
 			}
+			.sale-price {
+				font-size: 24rpx;
+				color: #999;
+				margin-bottom: 36rpx;
+			}
 			.reality-price {
-				margin-top: 6rpx;
+				align-items: center;
 			}
 			.reality-price-left {
 				font-size: 26rpx;
@@ -237,6 +245,7 @@
 			.reality-price-right {
 				font-size: 40rpx;
 				margin-left: 6rpx;
+				font-weight: bold;
 			}
 		}
 		.order-bottom-mes {
@@ -259,6 +268,7 @@
 			width: 100%;
 			display: flex;
 			justify-content: flex-end;
+			border-top: 1px solid #DEDEDE;
 			.b-btn {
 				width: 210rpx;
 				height: 90rpx;

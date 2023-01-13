@@ -1,6 +1,6 @@
 <template>
 	<view class="user-page">
-		<image class="user-page-bj" src="../../static/userCenter/userCenterBj.png"></image>
+		<image class="user-page-bj" src="/static/userCenter/userCenterBj.png"></image>
 		<view class="user-content">
 			<view class="user-c-top">
 				<view class="top-left">
@@ -17,24 +17,24 @@
 			<view class="user-list">
 				<view class="user-list-item" @click="toOrder">
 					<view class="user-list-item-left">
-						<image class="user-order-img" src="../../static/userCenter/myOrder.png"></image>
+						<image class="user-order-img" src="/static/userCenter/myOrder.png"></image>
 						<view>我的订单</view>
 					</view>
-					<image class="user-list-item-arrow" src="../../static/order/arrow.png"></image>
+					<image class="user-list-item-arrow" src="/static/order/arrow.png"></image>
 				</view>
 				<view class="user-list-item"  @click="toAddress">
 					<view class="user-list-item-left">
-						<image class="user-address-img" src="../../static/userCenter/address.png"></image>
+						<image class="user-address-img" src="/static/userCenter/address.png"></image>
 						<view>收货地址</view>
 					</view>
-					<image class="user-list-item-arrow" src="../../static/order/arrow.png"></image>
+					<image class="user-list-item-arrow" src="/static/order/arrow.png"></image>
 				</view>
 				<button class="user-list-item item-button" type='default' open-type='contact'>
 					<view class="user-list-item-left">
-						<image class="user-customer-img" src="../../static/userCenter/customer.png"></image>
+						<image class="user-customer-img" src="/static/userCenter/customer.png"></image>
 						<view class="item-button-text">联系客服</view>
 					</view>
-					<image class="user-list-item-arrow" src="../../static/order/arrow.png"></image>
+					<image class="user-list-item-arrow" src="/static/order/arrow.png"></image>
 				</button>
 			</view>
 		</view>
@@ -77,7 +77,7 @@
 					return;
 				}
 				uni.navigateTo({
-					url: '/pages/userCenter/myOrder',
+					url: '../../userCenterPages/myOrder',
 				})
 			},
 			toAddress() {
@@ -86,7 +86,7 @@
 					return;
 				}
 				uni.navigateTo({
-					url: '/pages/userCenter/address',
+					url: '../../userCenterPages/address',
 				})
 			},
 			requestSussessFun() {

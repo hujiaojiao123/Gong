@@ -1,5 +1,6 @@
 <template>
 	<view class="my-order-page">
+		<headerNav title="我的订单" :showBack="true" background="#EDEDED"></headerNav>
 		<view class="order-page-padding" v-if="orderList.length != 0" >
 			<view class="good-li" v-for="(orderItem, orderIndex) in orderList" :key="orderIndex" v-if="orderItem.goods.length != 0">
 				<view class="good-li-item" v-for="(item, index) in orderItem.goods" :key="index" @click="toClickFun(orderItem)">
@@ -40,9 +41,11 @@
 
 <script>
 	import goodsList from '@/components/goodsList/index.vue';
+	import headerNav from '@/components/headerNav/index.vue';
 	export default {
 		components: {
 			goodsList,
+			headerNav,
 		},
 		data() {
 			return {
@@ -70,11 +73,11 @@
 			toClickFun(item) {
 				if (item.status == 9) { // 跳转到
 					uni.navigateTo({
-						url: '/pages/userCenter/applyRefund?id=' + item.id,
+						url: '../userCenterPages/applyRefund?id=' + item.id,
 					})
 				} else {
 					uni.navigateTo({
-						url: '/pages/userCenter/orderDetail?id=' + item.id,
+						url: '../userCenterPages/orderDetail?id=' + item.id,
 					})
 				}
 				
@@ -82,8 +85,7 @@
 			getOrderListReqFun() {
 				this.isRequestFinish = false;
 				this.$api.getOrderList({}).then((res) => {
-					console.log(res[1]);
-					this.orderList = [res[1]]
+					this.orderList = res;
 					this.isRequestFinish = true;
 				});
 			},
@@ -93,11 +95,15 @@
 
 <style lang="less">
 	.my-order-page {
-		min-height: 100vh;
-		background-color: #f7f7f7;
+		height: 100vh;
 		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
 		.order-page-padding {
 			padding: 40rpx;
+			background-color: #f7f7f7;
+			flex: 1;
+			overflow: auto;
 		}
 		.good-li {
 			padding: 30rpx 28rpx;

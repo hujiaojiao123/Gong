@@ -49,7 +49,8 @@
 
 <script>
 	export default {
-	    components: {},
+	    components: {
+	    },
 	    data() {
 	        return {
 				tabChooseIndex: 2,

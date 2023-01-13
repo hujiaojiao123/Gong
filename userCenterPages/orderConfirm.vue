@@ -12,7 +12,7 @@
 						</view>
 					</view>
 					<view v-else>请选择收货地址</view>
-					<image class="ad-content-arrow" src="../../static/order/arrow.png"></image>
+					<image class="ad-content-arrow" src="/static/order/arrow.png"></image>
 				</view>
 			</view>
 			<goodsList :list="confirmList" :showCount="true"></goodsList>
@@ -58,7 +58,7 @@
 		methods: {
 			toAdress() {
 				uni.navigateTo({
-					url: '/pages/userCenter/address',
+					url: '../userCenterPages/address',
 				})
 			},
 			toPay() {
@@ -77,7 +77,7 @@
 							// 	icon: 'none'
 							// });
 							uni.redirectTo({
-								url: '/pages/userCenter/myOrder'
+								url: '../userCenterPages/myOrder'
 							});
 							// 存储刷新购物车的标识
 							uni.setStorageSync('addCart', true);
@@ -105,13 +105,13 @@
 	.order-confirm {
 		background-color: #F7F7F7;
 		height: 100vh;
-		padding: 0 40rpx;
 		display: flex;
 		flex-direction: column;
 		.orderConfirm-top {
 			flex: 1;
 			overflow: auto;
 			padding-bottom: 30rpx;
+			padding: 0 40rpx;
 		}
 		.confirm-title {
 			font-size: 44rpx;
@@ -142,20 +142,24 @@
 		}
 		.order-detail-mes {
 			margin-top: 20rpx;
-			background-color: #fff;
 			box-sizing: border-box;
 			padding: 50rpx 32rpx 28rpx 32rpx;
 			.o-price {
 				display: flex;
 				justify-content: space-between;
 			}
-			.all-price, .sale-price {
+			.all-price {
 				margin-bottom: 22rpx;
 				font-size: 24rpx;
 				color: #999;
 			}
+			.sale-price {
+				font-size: 24rpx;
+				color: #999;
+				margin-bottom: 36rpx;
+			}
 			.reality-price {
-				margin-top: 6rpx;
+				align-items: center;
 			}
 			.reality-price-left {
 				font-size: 26rpx;
@@ -163,11 +167,13 @@
 			.reality-price-right {
 				font-size: 40rpx;
 				margin-left: 6rpx;
+				font-weight: bold;
 			}
 		}
 		.orderConfirm-bottom {
 			height: 180rpx;
-			background-color: #F7F7F7;
+			width: 90%;
+			margin-left: 5%;
 		}
 		.confirm-btn {
 			width: 100%;

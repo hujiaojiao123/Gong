@@ -1,59 +1,57 @@
 <template>
 	<view class="shop-page">
+		<headerNav background="#EDEDED" title="购物袋" />
 		<view class="shop-page-content" v-if="goods_list.length !== 0">
-			<view class="content-top">
-				<uni-swipe-action>
-					<uni-swipe-action-item :index="bindex"
-						v-for="(bitem, bindex) in goods_list" :key="bindex" 
-						@click="clickH(bindex, bitem)" @open="openH"
-						:right-options="options">
-						<view class="item u-border-bottom">
-							<view class="goods-box goods-box-single">
-								<view class="selected-box" @click="chooseItem(bitem, bindex)">
-									<view class="no-choose" v-if="!goods_list[bindex].selected"></view>
-									<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else></image>
+			<uni-swipe-action>
+				<uni-swipe-action-item :index="bindex"
+					v-for="(bitem, bindex) in goods_list" :key="bindex" 
+					@click="clickH(bindex, bitem)" @open="openH"
+					:right-options="options">
+					<view class="item u-border-bottom">
+						<view class="goods-box goods-box-single">
+							<view class="selected-box" @click="chooseItem(bitem, bindex)">
+								<image class="choose-img" v-if="!goods_list[bindex].selected" src="/static/shop/noGouxuan.png" mode=""></image>
+								<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else></image>
+							</view>
+							<view class="goods-box">
+								<view class="goods-img" @click="toDetail(bitem.goods_id)">
+									<image :src="bitem.cover" mode=""></image>
 								</view>
-								<view class="goods-box">
-									<view class="goods-img" @click="toDetail(bitem.goods_id)">
-										<image :src="bitem.cover" mode=""></image>
+								<view class="content">
+									<view>
+										<view class="title">
+											<view class="text-box">
+												{{bitem.name}}
+											</view>
+										</view>
+										<view class="info">
+											规格：
+											<span v-for="(citem, cindex) in bitem.goods_sku_names" :key="cindex">
+												{{citem}}  
+											</span>
+										</view>
 									</view>
-									<view class="content">
-										<view>
-											<view class="title">
-												<view class="text-box">
-													{{bitem.name}}
-												</view>
-											</view>
-											<view class="info">
-												规格：
-												<span v-for="(citem, cindex) in bitem.goods_sku_names" :key="cindex">
-													{{citem}}  
-												</span>
-											</view>
+									<view class="content-bottom">
+										<view class="price">
+											<span class="big-text">¥{{bitem.selected ? bitem.price : bitem.price_sale}}</span>
+											<span v-if="bitem.selected" class="old-price">¥{{bitem.price_sale}}</span>
 										</view>
-										<view class="content-bottom">
-											<view class="price">
-												<span class="big-text">¥{{bitem.selected ? bitem.price : bitem.price_sale}}</span>
-												<span v-if="bitem.selected" class="old-price">¥{{bitem.price_sale}}</span>
-											</view>
-										</view>
-										<view class="count">
-											<uni-number-box :min="1" :max="200" background="#fff" v-model="bitem.goods_amount" @change="changeGoodsCount(bindex)"></uni-number-box>
-										</view>
+									</view>
+									<view class="count">
+										<uni-number-box :min="1" :max="200" background="#fff" v-model="bitem.goods_amount" @change="changeGoodsCount(bindex)"></uni-number-box>
 									</view>
 								</view>
 							</view>
 						</view>
-					</uni-swipe-action-item>
-				</uni-swipe-action>
-			</view>
+					</view>
+				</uni-swipe-action-item>
+			</uni-swipe-action>
 			<!-- 底部全选 -->
 			<view class="pay-tabbar">
 				<view class="left" @click="selectAll">
 					<view class="left-img">
-						<view class="no-choose" v-if="!isAllSelected"></view>
-						<!-- <image src="" mode="" v-if="!isAllSelected" @click="selectAll"></image> -->
-						<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else  @click="selectAll"></image>
+						<image class="choose-img" v-if="!isAllSelected" src="/static/shop/noGouxuan.png" mode=""></image>
+						<image class="choose-img" src="/static/shop/gouxuan.png" mode="" v-else></image>
 					</view>
 					<span class="left-all">全选</span>
 				</view>
@@ -81,8 +79,10 @@
 </template>
 
 <script>
+	import headerNav from '@/components/headerNav/index.vue';
 	export default {
 		components: {
+			headerNav,
 		},
 		data() {
 			return {
@@ -183,7 +183,7 @@
 				});
 				this.$store.dispatch('chooseArr', chooseArr);
 				uni.navigateTo({
-					url: '/pages/order/orderConfirm',
+					url: '../../userCenterPages/orderConfirm',
 				});
 				
 			},
@@ -238,18 +238,15 @@
 </script>
 <style lang="scss">
 	.shop-page {
-		background-color: #F7F7F7;
-		padding: 32rpx 20rpx 0 20rpx;
 		box-sizing: border-box;
 		height: 100vh;
+		display: flex;
+		flex-direction: column;
 		.shop-page-content {
-			display: flex;
-			flex-direction: column;
-			height: 100%;
-		}
-		.content-top {
 			flex: 1;
 			overflow: auto;
+			padding: 32rpx 20rpx 156rpx 20rpx;
+			background: #f7f7f7;
 		}
 		.item {
 			display: flex;
@@ -259,21 +256,19 @@
 		.uni-swipe {
 			margin-bottom: 20rpx;
 		}
-		.no-choose {
-			width: 39rpx;
-			height: 39rpx;
-			border: 2rpx solid #ccc;
-			border-radius: 100%;
-		}
 		.choose-img {
 			width: 42rpx;
 			height: 42rpx;
 		}
 		.pay-tabbar{
+			width: 100%;
+			position: fixed;
+			left: 0;
+			bottom: 0;
 			background-color: #FFFFFF;
 			display: flex;
 			align-items: center;
-			padding: 32rpx;
+			padding: 34rpx 32rpx 32rpx 42rpx;
 			box-sizing: border-box;
 			justify-content: space-between;
 			z-index: 10;

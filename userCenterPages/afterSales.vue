@@ -1,11 +1,12 @@
 <template>
 	<view class="after-sales">
+		<headerNav :showBack="true" background="#fff"></headerNav>
 		<view class="after-top">
 			<view class="sales-title">申请售后</view>
 			<view class="sales-choose">请选择你要退款的商品</view>
 			<view class="goods-box goods-box-single" v-for="(item, index) in salesList" :key="index">
 				<view class="selected-box" @click="chooseFun(item)">
-					<view class="no-choose" v-if="!item.selected"></view>
+					<image src="/static/shop/noGouxuan.png" mode="" v-if="!item.selected"></image>
 					<image src="/static/shop/gouxuan.png" mode="" v-else></image>
 				</view>
 				<view class="goods-box">
@@ -79,8 +80,10 @@
 </template>
 
 <script>
+	import headerNav from '@/components/headerNav/index.vue';
 	export default {
 		components: {
+			headerNav,
 		},
 		data() {
 			return {
@@ -173,9 +176,8 @@
 
 <style lang="less">
 	.after-sales {
-		background-color: #F7F7F7;
+		background-color: #fff;
 		height: 100vh;
-		padding: 68rpx 40rpx 100rpx 40rpx;
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
@@ -183,6 +185,7 @@
 			flex: 1;
 			overflow: auto;
 			padding-bottom: 60rpx;
+			padding: 68rpx 30rpx 60rpx 34rpx;
 		}
 		.sales-title {
 			font-size: 44rpx;
@@ -293,9 +296,12 @@
 				border-left: 1px solid #e7e7e7;
 			}
 		}
+		.uni-numbox__minus, .uni-numbox__value, .uni-numbox__plus {
+			background-color: #fff  !important;
+		}
 		.refund-price {
 			height: 120rpx;
-			background-color: #fff;
+			background-color: #f7f7f7;
 			border-radius: 16rpx;
 			line-height: 120rpx;
 			display: flex;
@@ -337,7 +343,7 @@
 			margin-top: 20rpx;
 		}
 		.after-sales-btn {
-			width: 100%;
+			width: 90%;
 			height: 100rpx;
 			line-height: 100rpx;
 			text-align: center;
@@ -345,6 +351,8 @@
 			background-color: #000;
 			border-radius: 8rpx;
 			font-size: 30rpx;
+			margin-left: 5%;
+			margin-bottom: 80rpx;
 		}
 		.after-sales-popup {
 			padding: 60rpx 30rpx 50rpx 30rpx;

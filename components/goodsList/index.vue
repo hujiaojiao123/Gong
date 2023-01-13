@@ -72,7 +72,7 @@
 
 <style scoped lang="less">
 	.good-li {
-		padding: 30rpx 28rpx;
+		padding: 30rpx 14rpx;
 		display: flex;
 		.goodsImg {
 			width: 200rpx;
