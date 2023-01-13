@@ -19,7 +19,9 @@
 				<view :style="{width: (goods.length ? Math.floor(100 / goods.length) + '%' : '50%')}" class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
 		 	</block>
 		</view>
-		<view class="index-name">{{goods[swiperCurrent].goods_name}}</view>
+		<view class="index-name-box">
+			<view class="index-name">{{goods[swiperCurrent].goods_name}}</view>
+		</view>
 		<view class="index-btn" @click="toDetail">查看详情</view>
 	</view>
 </template>
@@ -125,11 +127,16 @@
 			font-size: 28rpx;
 			color: #fff;
 		}
-		.index-name {
+		.index-name-box {
+			max-width: 240px;
+			text-align: center;
 			position: fixed;
+			bottom: 370rpx;
+			width: 480rpx;
 			left: 50%;
 			transform: translateX(-50%);
-			bottom: 370rpx;
+		}
+		.index-name {
 			font-size: 60rpx;
 			color: #fff;
 		}

@@ -114,8 +114,9 @@
 			padding: 0 40rpx;
 		}
 		.confirm-title {
-			font-size: 44rpx;
+			font-size: 48rpx;
 			padding: 68rpx 0;
+			font-weight: bold;
 		}
 		.confirm-adress {
 			.ad-title {
@@ -128,7 +129,7 @@
 				justify-content: space-between;
 				align-items: center;
 				padding-bottom: 40rpx;
-				border-bottom: 1px solid #E9E9E9;
+				border-bottom: 1rpx solid #E9E9E9;
 				margin-bottom: 20rpx;
 			}
 			.ad-content-mes {

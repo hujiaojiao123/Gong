@@ -188,8 +188,9 @@
 			padding: 68rpx 30rpx 60rpx 34rpx;
 		}
 		.sales-title {
-			font-size: 44rpx;
+			font-size: 48rpx;
 			margin-bottom: 12rpx;
+			font-weight: bold;
 		}
 		.sales-choose {
 			color: #999;
@@ -313,7 +314,7 @@
 			height: 120rpx;
 			line-height: 120rpx;
 			justify-content: space-between;
-			border-bottom: 1px solid #E9E9E9;
+			border-bottom: 1rpx solid #E9E9E9;
 			font-size: 24rpx;
 			.refund-reason-right {
 				display: flex;

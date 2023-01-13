@@ -155,9 +155,10 @@
 			position: relative;
 			margin-bottom: 20rpx;
 			.title-top {
-				font-size: 44rpx;
+				font-size: 48rpx;
 				margin-bottom: 20rpx;
 				color: #fff;
+				font-weight: bold;
 			}
 			.apply-bj {
 				width: 246rpx;
@@ -182,7 +183,7 @@
 				justify-content: space-between;
 				align-items: center;
 				padding-bottom: 40rpx;
-				border-bottom: 1px solid #E9E9E9;
+				border-bottom: 1rpx solid #E9E9E9;
 				margin-bottom: 20rpx;
 			}
 			.ad-content-mes {
@@ -242,7 +243,7 @@
 			width: 100%;
 			display: flex;
 			justify-content: flex-end;
-			border-top: 1px solid #DEDEDE;
+			border-top: 1rpx solid #DEDEDE;
 			.b-btn {
 				width: 240rpx;
 				height: 90rpx;

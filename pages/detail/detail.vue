@@ -1,69 +1,72 @@
 <template>
-	<view class="page-detail" v-if="detailData != null">
-		<view class="detail-banner">
-			<swiper class="b-top" 
-			 interval="3000" duration="300" circular="true" autoplay="true"
-			@change="changeSwiper"
-			>
-			  <swiper-item v-for="(item, index) in detailData.pictures" :key="index">
-			    <image class="detail-banner-img" :src="item" mode="widthFix"></image>
-			  </swiper-item>
-			</swiper>
-		</view>
-		<!-- 轮播指示点样式修改 -->
-		<view class="dot-box">
-			<view class="dots">
-				<block v-for="(item, index) in detailData.pictures.length" :key="index">
-					<view :style="{width: (detailData.pictures.length ? Math.floor(100 / detailData.pictures.length) + '%' : '50%')}" class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
-				</block>
+	<view class="page-detail">
+		<headerNav :showBack="true" background="#EDEDED"></headerNav>
+		<view v-if="detailData != null" class="detail-box">
+			<view class="detail-banner">
+				<swiper class="b-top" 
+				 interval="3000" duration="300" circular="true" autoplay="true"
+				@change="changeSwiper"
+				>
+				  <swiper-item v-for="(item, index) in detailData.pictures" :key="index">
+				    <image class="detail-banner-img" :src="item" mode="widthFix"></image>
+				  </swiper-item>
+				</swiper>
 			</view>
-		</view>
-		<!-- 其他颜色列表展示 -->
-		<view class="else-color">
-			<view class="else-color-list" 
-				@click="toNewDetail(item.id)"
-				v-for="(item, index) in detailData.recommend_goods" 
-				:key="index"
-			>
-				<image :src="item.cover"></image>
-			</view>
-		</view>
-		<!-- 标题 -->
-		<view class="d-content">
-			<view class="d-titile">{{detailData.name || ''}}</view>
-			<view class="d-label">
-				<view>货号：{{detailData.cargo || ''}}</view>
-				<view v-if="detailData.status != 1">已售{{detailData.sale_number || 0}}件</view>
-			</view>
-			<view class="d-message">
-				<view class="d-price" v-if="detailData.status != 1">
-					<view class="d-price-new">¥{{detailData.price || ''}}</view>
-					<view class="d-price-old">¥{{detailData.price_sale || ''}}</view>
-				</view>
-				<view class="d-price" v-else>¥--</view>
-				<view class="d-m-right"  v-if="detailData.status != 1">
-					<image src="/static/detail/sf.png"></image>
-					顺丰包邮
+			<!-- 轮播指示点样式修改 -->
+			<view class="dot-box">
+				<view class="dots">
+					<block v-for="(item, index) in detailData.pictures.length" :key="index">
+						<view :style="{width: (detailData.pictures.length ? Math.floor(100 / detailData.pictures.length) + '%' : '50%')}" class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
+					</block>
 				</view>
 			</view>
-		</view>
-		<rich-text :nodes="detailData.content"></rich-text>
-		 <!-- 热门推荐 -->
-		 <view class="d-hot">
-			 <view class="hot-title">热门推荐</view>
-			 <scroll-view scroll-with-animation :scroll-x="true" class="hot-scroll">
-			 	<view class="hot-item" v-for="(item, index) in hotList" @click="toNewDetail(item.id)"
-			 	 :key="item.id">
-			 		<view class="hot-image">
-						<image :src="item.cover"></image>
+			<!-- 其他颜色列表展示 -->
+			<view class="else-color">
+				<view class="else-color-list" 
+					@click="toNewDetail(item.id)"
+					v-for="(item, index) in detailData.recommend_goods" 
+					:key="index"
+				>
+					<image :src="item.cover"></image>
+				</view>
+			</view>
+			<!-- 标题 -->
+			<view class="d-content">
+				<view class="d-titile">{{detailData.name || ''}}</view>
+				<view class="d-label">
+					<view>货号：{{detailData.cargo || ''}}</view>
+					<view v-if="detailData.status != 1">已售{{detailData.sale_number || 0}}件</view>
+				</view>
+				<view class="d-message">
+					<view class="d-price" v-if="detailData.status != 1">
+						<view class="d-price-new">¥{{detailData.price || ''}}</view>
+						<view class="d-price-old">¥{{detailData.price_sale || ''}}</view>
 					</view>
-			 		<view class="hot-name">{{item.name}}</view>
-			 		<view class="hot-price">¥{{item.price}}</view>
-			 	</view>
-			 </scroll-view>
-		 </view>
-		 <!-- 底部 -->
-		 <view class="detail-foot">
+					<view class="d-price" v-else>¥--</view>
+					<view class="d-m-right"  v-if="detailData.status != 1">
+						<image src="/static/detail/sf.png"></image>
+						顺丰包邮
+					</view>
+				</view>
+			</view>
+			<rich-text :nodes="detailData.content"></rich-text>
+			 <!-- 热门推荐 -->
+			 <view class="d-hot" v-if="hotList.length != 0">
+				 <view class="hot-title">热门推荐</view>
+				 <scroll-view scroll-with-animation :scroll-x="true" class="hot-scroll">
+				 	<view class="hot-item" v-for="(item, index) in hotList" @click="toNewDetail(item.id)"
+				 	 :key="item.id">
+				 		<view class="hot-image">
+							<image :src="item.cover"></image>
+						</view>
+				 		<view class="hot-name">{{item.name}}</view>
+				 		<view class="hot-price">¥{{item.price}}</view>
+				 	</view>
+				 </scroll-view>
+			 </view>
+		</view>
+		<!-- 底部 -->
+		<view class="detail-foot">
 			 <button class="customer" type='default' open-type='contact'>
 				 <image src="/static/detail/customer.png"></image>
 				<view>客服</view>
@@ -73,40 +76,42 @@
 				 加入购物袋
 			 </view>
 			 <view class="purchase" @click="toBuy">立即购买</view>
-		 </view>
+		</view>
 		 <!-- 弹出层 -->
-		 <uni-popup ref="popup" type="bottom" background-color="#fff">
-			 <view class="bottom-pop">
-				 <view class="pop-top">
+		<uni-popup ref="popup" type="bottom" background-color="#fff">
+			<view class="bottom-pop">
+				<view class="pop-top">
 					 <view class="pop-top-left">
-						 <image :src="detailData.pictures[0]"></image>
-						 <!-- <image src="http://www.gong-official.com/uploads/image/2022/12/20/31e548c7269570a37710710287774bc905d4731b.jpg"></image> -->
-					 </view>
-					 <view class="pop-top-right">
-						 <view class="pop-r-title">
-							 <view>{{detailData.name}}</view>
-							 <view class="presale-label" v-if="detailData.status == 2">下单后{{detailData.days}}天内发货</view>
-						 </view>
-						 <view class="pop-r-price">¥{{detailData.status != 1 ? detailData.price : '--'}}</view>
-					 </view>
-				 </view>
-				 <!-- 选择尺码 -->
-				 <view class="pop-choose">
-					 <view class="c-title">选择尺码</view>
-					 <uni-data-checkbox :disabled="detailData.status == 1" mode="tag" v-model="popChoose" :localdata="sizeData"></uni-data-checkbox>
-				 </view>
-				 <view class="pop-btn pop-btn-disable" v-if="detailData.status == 1">暂未发售</view>
-				 <view class="pop-btn" v-else @click="popSure">确认</view>
-			 </view>
-		 </uni-popup>
+						<image :src="detailData.pictures[0]"></image>
+						<!-- <image src="http://www.gong-official.com/uploads/image/2022/12/20/31e548c7269570a37710710287774bc905d4731b.jpg"></image> -->
+					</view>
+					<view class="pop-top-right">
+						<view class="pop-r-title">
+							<view>{{detailData.name}}</view>
+							<view class="presale-label" v-if="detailData.status == 2">下单后{{detailData.days}}天内发货</view>
+						</view>
+						<view class="pop-r-price">¥{{detailData.status != 1 ? detailData.price : '--'}}</view>
+					</view>
+				</view>
+				<!-- 选择尺码 -->
+				<view class="pop-choose">
+					<view class="c-title">选择尺码</view>
+					<uni-data-checkbox :disabled="detailData.status == 1" mode="tag" v-model="popChoose" :localdata="sizeData"></uni-data-checkbox>
+				</view>
+				<view class="pop-btn pop-btn-disable" v-if="detailData.status == 1">暂未发售</view>
+				<view class="pop-btn" v-else @click="popSure">确认</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import LoginMixin from '@/components/mixin/login.js';
+	import headerNav from '@/components/headerNav/index.vue';
 	export default {
 		mixins: [LoginMixin],
 	    components: {
+			headerNav,
 	    },
 	    data() {
 	        return {
@@ -211,8 +216,6 @@
 					.replace(/\<p/gi,'<p class="pStyle"')
 					.replace(/\<br/gi,'<br class="brStyle"');
 					res.content = content;
-					// res.content.replace(/\<p/gi,'<p class="pStyle"');
-					console.log(content);
 					this.detailData = res;
 				});
 			},
@@ -239,7 +242,13 @@
 <style lang="scss">
 	.page-detail {
 		background: #f7f7f7;
-		padding-bottom: 230rpx;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+	.detail-box {
+		flex: 1;
+		overflow: auto;
 	}
 	.detail-banner {
 		height: 750rpx;
@@ -300,7 +309,7 @@
 	}
 	.d-content {
 		background-color: #fff;
-		padding: 20px;
+		padding: 40rpx;
 		box-sizing: border-box;
 		.d-titile {
 			font-size: 40rpx;
@@ -388,18 +397,13 @@
 		}
 	}
 	.detail-foot {
-		position: fixed;
-		left: 0;
-		bottom: 0;
 		width: 100%;
 		height: 230rpx;
 		display: flex;
-		padding: 36rpx 40rpx 0 44rpx;
-		// justify-content: center;
+		padding: 36rpx 0 0 46rpx;
 		background-color: #FFFFFF;
-		border-top: 1px solid #DEDEDE;
+		border-top: 1rpx solid #DEDEDE;
 		box-sizing: border-box;
-		justify-content: space-between;
 		.customer {
 			display: flex;
 			flex-direction: column;
@@ -428,6 +432,7 @@
 			align-items: center;
 			font-size: 28rpx;
 			justify-content: center;
+			margin: 0 24rpx 0 46rpx;
 			image {
 				width: 28rpx;
 				height: 34rpx;
@@ -543,6 +548,7 @@
 		margin: 0;
 		border:none;
 		background-color: #fff;
+		padding: 12rpx 40rpx;
 	}
 	.brStyle {
 		height: 0;

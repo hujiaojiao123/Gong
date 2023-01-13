@@ -164,8 +164,9 @@
 			padding: 0 40rpx;
 		}
 		.confirm-title {
-			font-size: 44rpx;
+			font-size: 48rpx;
 			padding: 68rpx 0;
+			font-weight: bold;
 		}
 		.confirm-adress {
 			.ad-title {
@@ -178,7 +179,7 @@
 				justify-content: space-between;
 				align-items: center;
 				padding-bottom: 40rpx;
-				border-bottom: 1px solid #E9E9E9;
+				border-bottom: 1rpx solid #E9E9E9;
 				margin-bottom: 20rpx;
 			}
 			.ad-content-mes {
@@ -193,7 +194,7 @@
 		}
 		.detail-wuliu {
 			padding: 40rpx 0;
-			border-bottom: 1px solid #E9E9E9;
+			border-bottom: 1rpx solid #E9E9E9;
 			.detail-wuliu-title {
 				font-size: 26rpx;
 				color: #666;
@@ -268,7 +269,7 @@
 			width: 100%;
 			display: flex;
 			justify-content: flex-end;
-			border-top: 1px solid #DEDEDE;
+			border-top: 1rpx solid #DEDEDE;
 			.b-btn {
 				width: 210rpx;
 				height: 90rpx;

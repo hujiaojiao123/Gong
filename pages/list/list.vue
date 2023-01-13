@@ -155,7 +155,7 @@
 			width: 100%;
 			display: flex;
 			align-items: center;
-			border-bottom: 1px solid rgba(0,0,0,0.1);
+			border-bottom: 1rpx solid rgba(0,0,0,0.1);
 			text-align: center;
 			position: relative;
 			image {

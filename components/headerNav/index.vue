@@ -62,7 +62,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-bottom: 1px solid rgba(0,0,0,0.1);
+		border-bottom: 1rpx solid rgba(0,0,0,0.1);
 	}
 	.left {
 		position: absolute;

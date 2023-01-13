@@ -168,7 +168,7 @@
 			}
 			.item-input {
 				padding: 12rpx 0;
-				border-bottom: 1px solid #ECECEC;
+				border-bottom: 1rpx solid #ECECEC;
 			}
 			.line {
 				color: #999;
@@ -180,7 +180,7 @@
 			}
 			.address-line {
 				margin-top: 12rpx;
-				height: 1px;
+				height: 1rpx;
 				background-color: #ECECEC;
 			}
 			.red-tip {
