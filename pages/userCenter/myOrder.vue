@@ -1,6 +1,6 @@
 <template>
 	<view class="my-order-page">
-		<view class="order-page-padding"  v-if="orderList.length != 0" >
+		<view class="order-page-padding" v-if="orderList.length != 0" >
 			<view class="good-li" v-for="(orderItem, orderIndex) in orderList" :key="orderIndex" v-if="orderItem.goods.length != 0">
 				<view class="good-li-item" v-for="(item, index) in orderItem.goods" :key="index" @click="toClickFun(orderItem)">
 					<image class="goodsImg" :src="item.product.cover"/>

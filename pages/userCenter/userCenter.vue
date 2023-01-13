@@ -17,21 +17,21 @@
 			<view class="user-list">
 				<view class="user-list-item" @click="toOrder">
 					<view class="user-list-item-left">
-						<image class="user-order-img" src="../../static/userCenter/myOrder.png"></image>
+						<image class="user-order-img" mode="widthFix" src="../../static/userCenter/myOrder.png"></image>
 						<view>我的订单</view>
 					</view>
 					<image class="user-list-item-arrow" src="../../static/order/arrow.png"></image>
 				</view>
 				<view class="user-list-item"  @click="toAddress">
 					<view class="user-list-item-left">
-						<image class="user-address-img" src="../../static/userCenter/address.png"></image>
+						<image class="user-address-img" mode="widthFix" src="../../static/userCenter/address.png"></image>
 						<view>收货地址</view>
 					</view>
 					<image class="user-list-item-arrow" src="../../static/order/arrow.png"></image>
 				</view>
 				<button class="user-list-item item-button" type='default' open-type='contact'>
 					<view class="user-list-item-left">
-						<image class="user-customer-img" src="../../static/userCenter/customer.png"></image>
+						<image class="user-customer-img" mode="widthFix" src="../../static/userCenter/customer.png"></image>
 						<view class="item-button-text">联系客服</view>
 					</view>
 					<image class="user-list-item-arrow" src="../../static/order/arrow.png"></image>
@@ -126,9 +126,11 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				padding: 0;
 				image {
-					width: 80rpx;
-					height: 66rpx;
+					width: 100%;
+					height: 100%;
+					border-radius: 100%;
 				}
 			}
 			.top-right {
@@ -163,17 +165,17 @@
 				line-height: 88rpx;
 				.user-order-img {
 					width: 36rpx;
-					height: 36rpx;
+					// height: 36rpx;
 					margin-right: 20rpx;
 				}
 				.user-address-img {
-					width: 34rpx;
-					height: 38rpx;
+					width: 36rpx;
+					// height: 38rpx;
 					margin-right: 20rpx;
 				}
 				.user-customer-img {
 					width: 36rpx;
-					height: 32rpx;
+					// height: 38rpx;
 					margin-right: 20rpx;
 				}
 				.user-list-item-arrow {
