@@ -311,6 +311,7 @@
 		background-color: #fff;
 		padding: 40rpx;
 		box-sizing: border-box;
+		margin-bottom: 20rpx;
 		.d-titile {
 			font-size: 40rpx;
 			font-weight: bold;

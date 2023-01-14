@@ -139,6 +139,7 @@
 		.index-name {
 			font-size: 60rpx;
 			color: #fff;
+			font-weight: bold;
 		}
 	}
 </style>

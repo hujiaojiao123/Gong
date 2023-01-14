@@ -21,7 +21,7 @@
 		<view class="tab-content">
 			<!-- 左侧菜单选项 -->
 			<scroll-view v-if="menuList.length != 0" :scroll-top="scrollTop" class="left-aside" scroll-y="true" show-scrollbar="false">
-				<view class="left-aside-item" :class="{active: current == item.id}" v-for="(item, index) in menuList" @click="menuTab(item.id)"
+				<view class="left-aside-item" :class="{active: current == item.id}"  v-for="(item, index) in menuList" @click="menuTab(item.id)"
 				 :key="item.id">
 					{{item.name}}
 				</view>
@@ -210,6 +210,7 @@
 				.left-aside-item.active {
 					font-size: 30rpx;
 					color: #333;
+					font-weight: bold;
 				}
 			}
 			.right-aside {
